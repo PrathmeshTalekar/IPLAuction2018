@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "739795875015",
+    "firebase_url": "https://iplauction2018-4d744.firebaseio.com",
+    "project_id": "iplauction2018-4d744",
+    "storage_bucket": "iplauction2018-4d744.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:739795875015:android:6cbaf917a9f3dd13",
+        "android_client_info": {
+          "package_name": "com.spit.iplauction2018.iplauction2018"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "739795875015-2jkjdklho2s839rdu5mas9bds0uij8l6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.spit.iplauction2018.iplauction2018",
+            "certificate_hash": "89f8d083d89ea0cbf23e349a0c4c87f4fab2ded3"
+          }
+        },
+        {
+          "client_id": "739795875015-2cvb6nghk9irpl1ceod99aq5p8eovv66.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5-w2_PbLbvmRdkE9vl3bbyAwLqcRMy68"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "739795875015-2cvb6nghk9irpl1ceod99aq5p8eovv66.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
