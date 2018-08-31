@@ -3,4 +3,20 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="blackBackground">#000000</color>
+    <color name="tan_background">#FFF7DA</color>
+    <color name="background">#3f3f3f</color>
+    <color name="cardBackground">#635e65</color>
+    <color name="confirmGreen">#76FF03</color>
+    <color name="hotRed">#e61919</color>
+    <color name="coldBlue">#33ccff</color>
+    <color name="leaderboardColor">#8800A0</color>
+    <color name="phonecall">#03DAC5</color>
+
+    <color name="successGreen">#66bb6a</color>
+    <color name="transparent_black">#88000000</color>
+    <color name="white">#ffffffff</color>
+    <color name="grey">#ff999999</color>
+    <color name="black">#000000</color>
 </resources>
