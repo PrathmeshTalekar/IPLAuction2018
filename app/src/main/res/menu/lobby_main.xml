@@ -6,9 +6,4 @@
         android:orderInCategory="100"
         android:title="@string/sign_out"
         app:showAsAction="never" />
-    <item
-        android:id="@+id/moneyBox"
-        android:orderInCategory="200"
-        android:title="Money"
-        app:showAsAction="always" />
 </menu>

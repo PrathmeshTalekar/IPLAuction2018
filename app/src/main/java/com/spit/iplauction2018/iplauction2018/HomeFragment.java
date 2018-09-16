@@ -20,6 +20,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,17 +37,19 @@ public class HomeFragment extends Fragment {
     TextView bid_price;
     TextView name;
     TextView base_price;
+    View rootView;
+    private Unbinder unbinder;
 
     public HomeFragment() {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        rootView = inflater.inflate(R.layout.fragment_home, container, false);
+        unbinder = ButterKnife.bind(this, rootView);
+        return rootView;
     }
 
     @Override
@@ -114,5 +119,11 @@ public class HomeFragment extends Fragment {
                 });
             }
         });
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 }
