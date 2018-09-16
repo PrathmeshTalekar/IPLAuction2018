@@ -2,10 +2,19 @@ package com.spit.iplauction2018.iplauction2018;
 
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 
 /**
@@ -13,7 +22,8 @@ import android.view.ViewGroup;
  */
 public class TeamFragment extends Fragment {
 
-
+    View rootView;
+    private Unbinder unbinder;
     public TeamFragment() {
         // Required empty public constructor
     }
@@ -22,8 +32,22 @@ public class TeamFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_team, container, false);
+        rootView = inflater.inflate(R.layout.fragment_team, container, false);
+        unbinder = ButterKnife.bind(this, rootView);
+        return rootView;
     }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        ArrayList<Player> player = new ArrayList<Player>();
+        player.add(new Player("Shikar Dhawan", "batsman"));
+        player.add(new Player("Ajinkya Rahane", "batsman"));
+        PlayerAdapter adapter = new PlayerAdapter(getContext(), player);
+        ListView listView = (ListView) getActivity().findViewById(R.id.list);
+        listView.setAdapter(adapter);
+
+    }
+
 
 }

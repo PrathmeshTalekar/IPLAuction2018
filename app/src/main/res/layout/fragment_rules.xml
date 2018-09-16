@@ -5,10 +5,47 @@
     android:layout_height="match_parent"
     tools:context=".RulesFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Rules Fragment" />
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/rule1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="18dp"
+                android:text="A team must consist of 11 players" />
+
+            <TextView
+                android:id="@+id/rule2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rule1"
+                android:padding="18dp"
+                android:text="A team must consist of 4 batsman, 4 bowler, 2 allrounder and 1 wicketkeeper" />
+
+            <TextView
+                android:id="@+id/rule3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rule2"
+                android:padding="18dp"
+                android:text="You can also sell the players you have buyed" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rule3"
+                android:padding="18dp"
+                android:text="Play fair" />
+
+        </RelativeLayout>
+    </LinearLayout>
+
 
 </FrameLayout>

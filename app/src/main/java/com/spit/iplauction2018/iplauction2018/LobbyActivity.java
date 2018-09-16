@@ -91,7 +91,7 @@ public class LobbyActivity extends AppCompatActivity {
                 joinEmail = jEmail.getText().toString();
                 joinPin = Integer.parseInt(jPin.getText().toString());
                 Toast.makeText(LobbyActivity.this, "Joining", Toast.LENGTH_SHORT).show();
-                joinLobby("techrace2k18gmailcom", 123);
+                joinLobby(joinEmail, joinPin);
             }
         });
         create.setOnClickListener(new View.OnClickListener() {
@@ -116,6 +116,7 @@ public class LobbyActivity extends AppCompatActivity {
         }
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mDatabaseReference = mFirebaseDatabase.getReference(path);
+        //    mDatabaseReference.addListenerForSingleValueEvent();
         mDatabaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

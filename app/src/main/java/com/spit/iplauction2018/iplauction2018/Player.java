@@ -7,6 +7,11 @@ public class Player {
     private String price;
     private String type;
     public Player(){}
+
+    public Player(String name, String type) {
+        this.name = name;
+        this.type = type;
+    }
     public Player(String name, String bidprice, String points, String price, String type){
         this.name=name;
         this.price=price;
