@@ -15,12 +15,12 @@
         <item
             android:id="@+id/sell"
             android:title="Sell" />
-        <item
-            android:id="@+id/lobby"
-            android:title="Lobby" />
-        <item
-            android:id="@+id/lobbyActivity"
-            android:title="Lobby Act" />
+        <!--<item-->
+            <!--android:id="@+id/lobby"-->
+            <!--android:title="Lobby" />-->
+        <!--<item-->
+            <!--android:id="@+id/lobbyActivity"-->
+            <!--android:title="Lobby Act" />-->
     </group>
     <group
         android:id="@+id/helpbar"
