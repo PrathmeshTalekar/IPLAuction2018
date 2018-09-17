@@ -9,17 +9,19 @@ public class User {
     String batsman;
     String bowler;
     String wicketkeeper;
-    Boolean inLobby;
+    String lobby;
 
     public User() {
 
     }
 
-    public User(String displayName, String cash, String points, Boolean inLobby) {
+    public User(String displayName, String cash, String points) {
         this.displayName = displayName;
         this.cash = cash;
         this.points = points;
-        this.inLobby = inLobby;
+    }
+    public User(String lobby){
+        this.lobby=lobby;
     }
 
 

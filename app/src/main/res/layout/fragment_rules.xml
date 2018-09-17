@@ -3,48 +3,68 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".RulesFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@color/background">
 
-        <RelativeLayout
+<android.support.v7.widget.CardView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardElevation="8dp"
+    app:cardCornerRadius="5dp"
+    android:layout_margin="8dp">
+            <TextView
+                android:background="@color/cardBackground"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="18dp"
+                android:text="@string/rule1" />
+</android.support.v7.widget.CardView>
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
+            android:layout_height="wrap_content"
+            app:cardElevation="8dp"
+            app:cardCornerRadius="5dp"
+            android:layout_margin="8dp">
             <TextView
-                android:id="@+id/rule1"
-                android:layout_width="wrap_content"
+                android:background="@color/cardBackground"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="18dp"
-                android:text="A team must consist of 11 players" />
-
+                android:text="@string/rule2" />
+        </android.support.v7.widget.CardView>
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardElevation="8dp"
+            app:cardCornerRadius="5dp"
+            android:layout_margin="8dp">
             <TextView
-                android:id="@+id/rule2"
-                android:layout_width="wrap_content"
+                android:background="@color/cardBackground"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/rule1"
                 android:padding="18dp"
-                android:text="A team must consist of 4 batsman, 4 bowler, 2 allrounder and 1 wicketkeeper" />
+                android:text="@string/rule3" />
+        </android.support.v7.widget.CardView>
 
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardElevation="8dp"
+            app:cardCornerRadius="5dp"
+            android:layout_margin="8dp">
             <TextView
-                android:id="@+id/rule3"
-                android:layout_width="wrap_content"
+                android:background="@color/cardBackground"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/rule2"
                 android:padding="18dp"
-                android:text="You can also sell the players you have buyed" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/rule3"
-                android:padding="18dp"
-                android:text="Play fair" />
-
-        </RelativeLayout>
+                android:text="@string/rule4" />
+        </android.support.v7.widget.CardView>
     </LinearLayout>
 
 

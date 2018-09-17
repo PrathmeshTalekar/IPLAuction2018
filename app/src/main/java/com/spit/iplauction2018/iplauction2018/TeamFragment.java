@@ -42,7 +42,16 @@ public class TeamFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ArrayList<Player> player = new ArrayList<Player>();
         player.add(new Player("Shikar Dhawan", "batsman"));
+        player.add(new Player("Virendra Sehwag","batsman"));
         player.add(new Player("Ajinkya Rahane", "batsman"));
+        player.add(new Player("Sachin Tendulkar","batsman"));
+        player.add(new Player("Ricky Ponting","batsman"));
+        player.add(new Player("MS Dhoni","wicketkeeper"));
+        player.add(new Player("Yuvraj Singh","all rounder"));
+        player.add(new Player("Ravindra Ashwin","bowler"));
+        player.add(new Player("Lasith Malinga","bowler"));
+        player.add(new Player("Ishan Sharma","bowler"));
+        player.add(new Player("Sunil Narine","bowler"));
         PlayerAdapter adapter = new PlayerAdapter(getContext(), player);
         ListView listView = (ListView) getActivity().findViewById(R.id.list);
         listView.setAdapter(adapter);

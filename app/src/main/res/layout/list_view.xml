@@ -1,26 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="4dp"
+    android:elevation="8dp"
+    app:cardCornerRadius="5dp"
     tools:context=".TeamFragment">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="4dp"
+        android:background="@color/cardBackground">
 
     <TextView
         android:id="@+id/playername"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:text="lutti" />
+        tools:text="Sachin Tendulkar" />
 
     <TextView
         android:id="@+id/playertype"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:text="one" />
+        tools:text="Batsman" />
+    </LinearLayout>
 
-</LinearLayout>
+</android.support.v7.widget.CardView>

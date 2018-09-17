@@ -31,10 +31,7 @@ import butterknife.ButterKnife;
 
 public class LobbyActivity extends AppCompatActivity {
 
-    public static final int RC_SIGN_IN = 1;
-    DatabaseReference reference, jreference;
-    int x;
-    //    Button create;
+    public static final int RC_SIGN_IN = 1;int x;
     @BindView(R.id.lobby)
     Button create;
     @BindView(R.id.join)
@@ -52,7 +49,7 @@ public class LobbyActivity extends AppCompatActivity {
     int joinPin, createPin;
     Intent intent;
     private FirebaseDatabase mFirebaseDatabase;
-    private DatabaseReference mDatabaseReference;
+    private DatabaseReference mDatabaseReference,reference, jreference;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
 
@@ -63,6 +60,7 @@ public class LobbyActivity extends AppCompatActivity {
         intent = new Intent(LobbyActivity.this, MainActivity.class);
         ButterKnife.bind(this);
         mFirebaseAuth = FirebaseAuth.getInstance();
+        reference = FirebaseDatabase.getInstance().getReference();
         final List<AuthUI.IdpConfig> providers = Arrays.asList(
                 new AuthUI.IdpConfig.EmailBuilder().build(),
                 new AuthUI.IdpConfig.GoogleBuilder().build());
@@ -71,7 +69,6 @@ public class LobbyActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
-                    //user signed in
                     Toast.makeText(LobbyActivity.this, "You're now signed in", Toast.LENGTH_SHORT).show();
                 } else {
                     //user signed out
@@ -89,17 +86,27 @@ public class LobbyActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 joinEmail = jEmail.getText().toString();
-                joinPin = Integer.parseInt(jPin.getText().toString());
-                Toast.makeText(LobbyActivity.this, "Joining", Toast.LENGTH_SHORT).show();
-                joinLobby(joinEmail, joinPin);
+                if(joinEmail.length()==0&&jPin.getText().toString().length()==0){
+                    Toast.makeText(LobbyActivity.this, "Enter Host Email and Lobby Pin", Toast.LENGTH_SHORT).show();
+                }else if(joinEmail.length()==0){
+                    Toast.makeText(LobbyActivity.this, "Enter Host Email", Toast.LENGTH_SHORT).show();
+                }else if(jPin.getText().toString().length()==0){
+                    Toast.makeText(LobbyActivity.this, "Enter Lobby Pin", Toast.LENGTH_SHORT).show();
+                }else {
+                    joinPin = Integer.parseInt(jPin.getText().toString());
+                    joinLobby(joinEmail, joinPin);
+                }
             }
         });
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createPin = Integer.parseInt(cPin.getText().toString());
-                Toast.makeText(LobbyActivity.this, "Creating", Toast.LENGTH_SHORT).show();
-                createLobby(createPin);
+                if(cPin.getText().toString().length()==0){
+                    Toast.makeText(LobbyActivity.this, "Enter Lobby Pin", Toast.LENGTH_SHORT).show();
+                }else{
+                    createPin = Integer.parseInt(cPin.getText().toString());
+                    createLobby(createPin);
+                }
             }
         });
     }
@@ -109,45 +116,42 @@ public class LobbyActivity extends AppCompatActivity {
         email = email.replaceAll("\\.", "");
         email = email.replaceAll("@", "");
         final String path = "lobby/" + email + "/";
-        Log.i("path", path);
-        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
-            Toast.makeText(this, "Not logged in", Toast.LENGTH_SHORT).show();
-            return;
-        }
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mDatabaseReference = mFirebaseDatabase.getReference(path);
-        //    mDatabaseReference.addListenerForSingleValueEvent();
-        mDatabaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                x = dataSnapshot.child("pin").getValue(Integer.class);
-                if (x == pin) {
-                    display_name = dName.getText().toString();
-                    jreference = FirebaseDatabase.getInstance().getReference(path);
-                    jreference.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(new User(display_name, "" + 99999999, "" + 0, true))
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    Toast.makeText(LobbyActivity.this, "All transaction Complete", Toast.LENGTH_SHORT).show();
-                                    startActivity(new Intent(LobbyActivity.this, MainActivity.class));
-                                    finish();
-                                }
-                            });
-//                    LobbyActivity.this.runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            startActivity(intent);
-//
-//                        }
-//                    });
+
+            mDatabaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    try {
+                        x = dataSnapshot.child("pin").getValue(Integer.class);
+                        if (x != pin) {
+                            Toast.makeText(LobbyActivity.this, "Incorrect Pin", Toast.LENGTH_SHORT).show();
+                        } else if (x == pin) {
+                            display_name = dName.getText().toString();
+                            if (display_name.length() == 0) {
+                                Toast.makeText(LobbyActivity.this, "Enter Display Name", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(LobbyActivity.this, "Joining", Toast.LENGTH_SHORT).show();
+                                //jreference.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(new User(path));
+                                jreference = FirebaseDatabase.getInstance().getReference(path);
+                                jreference.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(new User(display_name, "" + 99999999, "" + 0))
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                startActivity(new Intent(LobbyActivity.this, MainActivity.class));
+                                                finish();
+                                            }
+                                        });
+                            }
+                        }
+                    }catch (Exception e){
+                        Toast.makeText(LobbyActivity.this,"Invalid Host Email",Toast.LENGTH_SHORT).show();
+                    }
                 }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                }
+            });
 
     }
 
@@ -157,22 +161,27 @@ public class LobbyActivity extends AppCompatActivity {
         email = email.replaceAll("\\.", "");
         email = email.replaceAll("@", "");
         String path = "lobby/" + email + "/";
+        display_name = dName.getText().toString();
+        if (display_name.length() == 0) {
+            Toast.makeText(LobbyActivity.this, "Enter Display Name", Toast.LENGTH_SHORT).show();
+        }else {
+            Toast.makeText(LobbyActivity.this, "Creating", Toast.LENGTH_SHORT).show();
+            //reference.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(new User(path));
+            reference = FirebaseDatabase.getInstance().getReference(path);
+            reference.child("pin").setValue(pin).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
 
-        reference = FirebaseDatabase.getInstance().getReference(path);
-
-        reference.child("pin").setValue(pin).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                display_name = dName.getText().toString();
-                reference.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(new User(display_name, "" + 99999999, "" + 0, true));
-                reference.child("player1").setValue("" + 5200000);
-                reference.child("player2").setValue("" + 4000000);
-                reference.child("player3").setValue("" + 9000000);
-                reference.child("player4").setValue("" + 2800000);
-                reference.child("player5").setValue("" + 3000000);
-                startActivity(intent);
-            }
-        });
+                    reference.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(new User(display_name, "" + 99999999, "" + 0));
+                    reference.child("player1").setValue("" + 5200000);
+                    reference.child("player2").setValue("" + 4000000);
+                    reference.child("player3").setValue("" + 9000000);
+                    reference.child("player4").setValue("" + 2800000);
+                    reference.child("player5").setValue("" + 3000000);
+                    startActivity(intent);
+                }
+            });
+        }
     }
 
     @Override
@@ -215,10 +224,6 @@ public class LobbyActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        Log.i("reached", "removed xml");
-
-//        mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
-        Log.i("reached", "removed xml");
-
+        mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
     }
 }
