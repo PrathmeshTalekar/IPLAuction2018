@@ -52,6 +52,7 @@ public class LobbyActivity extends AppCompatActivity {
     private DatabaseReference mDatabaseReference,reference, jreference;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
+    String path;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,7 +116,7 @@ public class LobbyActivity extends AppCompatActivity {
     void joinLobby(String email, final int pin) {
         email = email.replaceAll("\\.", "");
         email = email.replaceAll("@", "");
-        final String path = "lobby/" + email + "/";
+        path = "lobby/" + email + "/";
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mDatabaseReference = mFirebaseDatabase.getReference(path);
 
@@ -132,12 +133,12 @@ public class LobbyActivity extends AppCompatActivity {
                                 Toast.makeText(LobbyActivity.this, "Enter Display Name", Toast.LENGTH_SHORT).show();
                             } else {
                                 Toast.makeText(LobbyActivity.this, "Joining", Toast.LENGTH_SHORT).show();
-                                //jreference.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(new User(path));
                                 jreference = FirebaseDatabase.getInstance().getReference(path);
                                 jreference.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(new User(display_name, "" + 99999999, "" + 0))
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void aVoid) {
+                                                intent.putExtra("lobby_path", path);
                                                 startActivity(new Intent(LobbyActivity.this, MainActivity.class));
                                                 finish();
                                             }
@@ -160,13 +161,12 @@ public class LobbyActivity extends AppCompatActivity {
         String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         email = email.replaceAll("\\.", "");
         email = email.replaceAll("@", "");
-        String path = "lobby/" + email + "/";
+        path = "lobby/" + email + "/";
         display_name = dName.getText().toString();
         if (display_name.length() == 0) {
             Toast.makeText(LobbyActivity.this, "Enter Display Name", Toast.LENGTH_SHORT).show();
         }else {
             Toast.makeText(LobbyActivity.this, "Creating", Toast.LENGTH_SHORT).show();
-            //reference.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(new User(path));
             reference = FirebaseDatabase.getInstance().getReference(path);
             reference.child("pin").setValue(pin).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
@@ -178,7 +178,34 @@ public class LobbyActivity extends AppCompatActivity {
                     reference.child("player3").setValue("" + 9000000);
                     reference.child("player4").setValue("" + 2800000);
                     reference.child("player5").setValue("" + 3000000);
+                    reference.child("player6").setValue("" + 2000000);
+                    reference.child("player7").setValue("" + 3000000);
+                    reference.child("player8").setValue("" + 1800000);
+                    reference.child("player9").setValue("" + 7800000);
+                    reference.child("player10").setValue("" + 11000000);
+                    reference.child("player11").setValue("" + 7600000);
+                    reference.child("player12").setValue("" + 9400000);
+                    reference.child("player13").setValue("" + 2000000);
+                    reference.child("player14").setValue("" + 4200000);
+                    reference.child("player15").setValue("" + 3000000);
+                    reference.child("player16").setValue("" + 4200000);
+                    reference.child("player17").setValue("" + 6000000);
+                    reference.child("player18").setValue("" + 9000000);
+                    reference.child("player19").setValue("" + 6200000);
+                    reference.child("player20").setValue("" + 11500000);
+                    reference.child("player21").setValue("" + 5400000);
+                    reference.child("player22").setValue("" + 12500000);
+                    reference.child("player23").setValue("" + 6400000);
+                    reference.child("player24").setValue("" + 4000000);
+                    reference.child("player25").setValue("" + 7400000);
+                    reference.child("player26").setValue("" + 6200000);
+                    reference.child("player27").setValue("" + 7400000);
+                    reference.child("player28").setValue("" + 7400000);
+                    reference.child("player29").setValue("" + 8000000);
+                    reference.child("player30").setValue("" + 4400000);
+                    intent.putExtra("lobby_path", path);
                     startActivity(intent);
+                    finish();
                 }
             });
         }

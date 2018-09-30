@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity
     private FirebaseAuth mFirebaseAuth;
     //    private FirebaseAuth.AuthStateListener mAuthStateListener;
     public static final int RC_SIGN_IN=1;
+    Bundle frag_bundle;
 
 
     @Override
@@ -41,6 +42,10 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        Bundle bundle = getIntent().getExtras();
+        String message = bundle.getString("lobby_path");
+        frag_bundle = new Bundle();
+        frag_bundle.putString("lobby", message);
         mFirebaseDatabase=FirebaseDatabase.getInstance();
         mFirebaseAuth=FirebaseAuth.getInstance();
 //        final List<AuthUI.IdpConfig> providers = Arrays.asList(
@@ -144,6 +149,7 @@ public class MainActivity extends AppCompatActivity
         switch (id) {
             case R.id.home:
                 fragment = new HomeFragment();
+                fragment.setArguments(frag_bundle);
                 break;
             case R.id.help:
                 fragment = new HelpFragment();
