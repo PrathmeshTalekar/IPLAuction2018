@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@color/background">
+        android:background="@color/blueBackground">
 
 <android.support.v7.widget.CardView
     android:layout_width="match_parent"
@@ -19,10 +19,12 @@
     app:cardCornerRadius="5dp"
     android:layout_margin="8dp">
             <TextView
-                android:background="@color/cardBackground"
+                android:background="@color/rules"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="18dp"
+                android:textColor="@color/black"
+                android:textSize="15dp"
                 android:text="@string/rule1" />
 </android.support.v7.widget.CardView>
         <android.support.v7.widget.CardView
@@ -32,10 +34,12 @@
             app:cardCornerRadius="5dp"
             android:layout_margin="8dp">
             <TextView
-                android:background="@color/cardBackground"
+                android:background="@color/rules"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="18dp"
+                android:textColor="@color/black"
+                android:textSize="15dp"
                 android:text="@string/rule2" />
         </android.support.v7.widget.CardView>
         <android.support.v7.widget.CardView
@@ -45,10 +49,12 @@
             app:cardCornerRadius="5dp"
             android:layout_margin="8dp">
             <TextView
-                android:background="@color/cardBackground"
+                android:background="@color/rules"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="18dp"
+                android:textColor="@color/black"
+                android:textSize="15dp"
                 android:text="@string/rule3" />
         </android.support.v7.widget.CardView>
 
@@ -59,10 +65,12 @@
             app:cardCornerRadius="5dp"
             android:layout_margin="8dp">
             <TextView
-                android:background="@color/cardBackground"
+                android:background="@color/rules"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="18dp"
+                android:textColor="@color/black"
+                android:textSize="15dp"
                 android:text="@string/rule4" />
         </android.support.v7.widget.CardView>
     </LinearLayout>

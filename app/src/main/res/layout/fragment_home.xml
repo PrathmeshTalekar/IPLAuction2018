@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@color/background">
+        android:background="@color/blueBackground">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -20,7 +20,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:text="name surname" />
+                android:text="name surname"
+                android:textColor="@color/black"
+                android:textSize="20dp" />
 
             <TextView
                 android:id="@+id/price_text_view"
@@ -28,7 +30,9 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/name_text_view"
                 android:layout_centerHorizontal="true"
-                android:text="12345" />
+                android:text="12345"
+                android:textColor="@color/black"
+                android:textSize="15dp" />
 
             <TextView
                 android:id="@+id/bid_price"
@@ -36,7 +40,9 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/price_text_view"
                 android:layout_centerHorizontal="true"
-                android:text="56789" />
+                android:text="56789"
+                android:textColor="@color/black"
+                android:textSize="15dp" />
         </RelativeLayout>
 
         <LinearLayout
@@ -55,19 +61,28 @@
                     android:id="@+id/button_100"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="+100" />
+                    android:layout_margin="10dp"
+                    android:background="@color/button"
+                    android:text="+100"
+                    android:textColor="@color/black" />
 
                 <Button
                     android:id="@+id/button_500"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="+500" />
+                    android:layout_margin="10dp"
+                    android:background="@color/button"
+                    android:text="+500"
+                    android:textColor="@color/black" />
 
                 <Button
                     android:id="@+id/button_1000"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="+1000" />
+                    android:layout_margin="10dp"
+                    android:background="@color/button"
+                    android:text="+1000"
+                    android:textColor="@color/black" />
             </LinearLayout>
 
             <LinearLayout
@@ -80,19 +95,28 @@
                     android:id="@+id/button_2000"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="+2000" />
+                    android:layout_margin="10dp"
+                    android:background="@color/button"
+                    android:text="+2000"
+                    android:textColor="@color/black" />
 
                 <Button
                     android:id="@+id/button_5000"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="+5000" />
+                    android:layout_margin="10dp"
+                    android:background="@color/button"
+                    android:text="+5000"
+                    android:textColor="@color/black" />
 
                 <Button
                     android:id="@+id/button_10000"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="+10000" />
+                    android:layout_margin="10dp"
+                    android:background="@color/button"
+                    android:text="+10000"
+                    android:textColor="@color/black" />
             </LinearLayout>
 
             <LinearLayout
@@ -105,19 +129,28 @@
                     android:id="@+id/button_20000"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="+20000" />
+                    android:layout_margin="10dp"
+                    android:background="@color/button"
+                    android:text="+20000"
+                    android:textColor="@color/black" />
 
                 <Button
                     android:id="@+id/button_50000"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="+50000" />
+                    android:layout_margin="10dp"
+                    android:background="@color/button"
+                    android:text="+50000"
+                    android:textColor="@color/black" />
 
                 <Button
                     android:id="@+id/button_100000"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="+100000" />
+                    android:layout_margin="10dp"
+                    android:background="@color/button"
+                    android:text="+100000"
+                    android:textColor="@color/black" />
             </LinearLayout>
 
             <LinearLayout
@@ -130,19 +163,28 @@
                     android:id="@+id/button_200000"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="+200000" />
+                    android:layout_margin="10dp"
+                    android:background="@color/button"
+                    android:text="+200000"
+                    android:textColor="@color/black" />
 
                 <Button
                     android:id="@+id/button_500000"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="+500000" />
+                    android:layout_margin="10dp"
+                    android:background="@color/button"
+                    android:text="+500000"
+                    android:textColor="@color/black" />
 
                 <Button
                     android:id="@+id/button_1000000"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="+1000000" />
+                    android:layout_margin="10dp"
+                    android:background="@color/button"
+                    android:text="+1000000"
+                    android:textColor="@color/black" />
             </LinearLayout>
 
         </LinearLayout>
@@ -154,7 +196,8 @@
             android:layout_gravity="center_horizontal"
             android:gravity="center"
             android:text="No bids yet"
-            android:textColor="@color/white" />
+            android:textColor="@color/black"
+            android:textSize="30dp" />
     </LinearLayout>
 
 </FrameLayout>
