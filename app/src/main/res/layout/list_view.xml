@@ -14,18 +14,22 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="4dp"
-        android:background="@color/cardBackground">
+        android:background="@color/rules">
 
     <TextView
         android:id="@+id/playername"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="13dp"
         tools:text="Sachin Tendulkar" />
 
     <TextView
         android:id="@+id/playertype"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="13dp"
         tools:text="Batsman" />
     </LinearLayout>
 

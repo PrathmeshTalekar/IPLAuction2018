@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/grey"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
@@ -14,7 +15,7 @@
         <LinearLayout
             android:padding="8dp"
             android:layout_width="match_parent"
-            android:background="@color/cardBackground"
+            android:background="@color/blueBackground"
             android:layout_height="wrap_content"
             android:orientation="vertical">
         <EditText
@@ -37,7 +38,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@color/cardBackground"
+    android:background="@color/blueBackground"
     android:padding="8dp">
     <EditText
         android:id="@+id/create_pin"
@@ -65,7 +66,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="@color/cardBackground"
+            android:background="@color/blueBackground"
             android:padding="8dp">
             <EditText
                 android:id="@+id/join_email"

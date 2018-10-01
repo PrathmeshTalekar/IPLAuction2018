@@ -80,6 +80,8 @@ public class LobbyActivity extends AppCompatActivity {
                                     .createSignInIntentBuilder()
                                     .setIsSmartLockEnabled(false)
                                     .setAvailableProviders(providers)
+                                    .setLogo(R.drawable.log)
+                                    .setTheme(R.style.LoginTheme)
                                     .build(),
                             RC_SIGN_IN);
                 }
