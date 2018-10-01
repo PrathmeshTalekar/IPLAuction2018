@@ -2,6 +2,7 @@ package com.spit.iplauction2018.iplauction2018;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -27,6 +28,9 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+
+    MenuItem menuItem;
+    Menu menu;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mDatabaseReference;
     private FirebaseAuth mFirebaseAuth;
@@ -48,9 +52,6 @@ public class MainActivity extends AppCompatActivity
         frag_bundle.putString("lobby", message);
         mFirebaseDatabase=FirebaseDatabase.getInstance();
         mFirebaseAuth=FirebaseAuth.getInstance();
-//        final List<AuthUI.IdpConfig> providers = Arrays.asList(
-//                new AuthUI.IdpConfig.EmailBuilder().build(),
-//                new AuthUI.IdpConfig.GoogleBuilder().build());
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -60,63 +61,14 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        displaySelectedScreen(R.id.home);
 
-//        mAuthStateListener=new FirebaseAuth.AuthStateListener() {
-//            @Override
-//            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-//                FirebaseUser user=firebaseAuth.getCurrentUser();
-//                if(user!=null){
-//                    //user signed in
-//                    Toast.makeText(MainActivity.this,"You're now signed in",Toast.LENGTH_SHORT).show();
-//                }else{
-//                    //user signed out
-//                    startActivityForResult(
-//                            AuthUI.getInstance()
-//                                    .createSignInIntentBuilder()
-//                                    .setIsSmartLockEnabled(false)
-//                                    .setAvailableProviders(providers)
-//                                    .build(),
-//                            RC_SIGN_IN);
-//                }
-//            }
-//        };
     }
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == RC_SIGN_IN) {
-//            if (resultCode == RESULT_OK) {
-//                Toast.makeText(this, "You're Signed In", Toast.LENGTH_SHORT).show();
-//            } else if (resultCode == RESULT_CANCELED) {
-//                Toast.makeText(this, "Signing Out", Toast.LENGTH_SHORT).show();
-//                finish();
-//            }
-//        }
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()) {
-//            case R.id.sign_out_menu:
-//                AuthUI.getInstance().signOut(this);
-//                return true;
-//            default:
-//                return super.onOptionsItemSelected(item);
-//        }
-//    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-//        mFirebaseAuth.addAuthStateListener(mAuthStateListener);
-    }
+    Fragment fragment = null;
 
     @Override
     protected void onPause() {
         super.onPause();
-//        mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
     }
 
     @Override
@@ -129,26 +81,49 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    HomeFragment homeFragment = null;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        displaySelectedScreen(R.id.home);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.game_main, menu);
+        this.menu = menu;
         return true;
     }
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         displaySelectedScreen(item.getItemId());
         return true;
     }
+
     private void displaySelectedScreen(int id) {
-
-        Fragment fragment = null;
-
         switch (id) {
             case R.id.home:
-                fragment = new HomeFragment();
+                if (homeFragment == null) {
+                    homeFragment = new HomeFragment();
+                    if (menu == null) {
+                        Toast.makeText(this, "Passing menu empty", Toast.LENGTH_SHORT).show();
+                        Runnable r = new Runnable() {
+                            @Override
+                            public void run() {
+                                ((HomeFragment) fragment).setGlobalMenu(menu);
+                                Toast.makeText(MainActivity.this, "Updated menu", Toast.LENGTH_SHORT).show();
+                            }
+                        };
+                        Handler h = new Handler();
+                        h.postDelayed(r, 1000);
+                    } else {
+                        ((HomeFragment) fragment).setGlobalMenu(menu);
+                    }
+                }
+                fragment = homeFragment;
                 fragment.setArguments(frag_bundle);
                 break;
             case R.id.help:

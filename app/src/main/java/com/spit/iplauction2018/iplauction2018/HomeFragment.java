@@ -3,6 +3,7 @@ package com.spit.iplauction2018.iplauction2018;
 
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -61,11 +62,34 @@ public class HomeFragment extends Fragment {
     MenuItem myItem;
     private Unbinder unbinder;
     Menu globalMenu;
-    private DatabaseReference mDatabaseReference, reference;
+    User user;
+    String points;
+    private DatabaseReference playerReference, userReference;
+
+    public void setGlobalMenu(Menu globalMenu) {
+        this.globalMenu = globalMenu;
+    }
 
     public HomeFragment() {
         // Required empty public constructor
     }
+
+
+    void setMoney(final String money) {
+        if (globalMenu != null) {
+            myItem = globalMenu.findItem(R.id.moneyBox);
+            myItem.setTitle("" + money);
+        } else {
+            Runnable r = new Runnable() {
+                @Override
+                public void run() {
+                    setMoney(money);
+                }
+            };
+            new Handler().postDelayed(r, 100);
+        }
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -80,41 +104,72 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mFirebaseDatabase= FirebaseDatabase.getInstance();
-        mDatabaseReference=mFirebaseDatabase.getReference("players/player"+Integer.toString(1)+"/");
-        mDatabaseReference.addValueEventListener(new ValueEventListener() {
+        playerReference = FirebaseDatabase.getInstance().getReference(lobby_in + "player" + 1);
+        playerReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 player=dataSnapshot.getValue(Player.class);
                 name.setText(player.getName());
                 base_price.setText(player.getPrice());
                 bid_price.setText(player.getBidprice());
+                points = player.getPoints();
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
 
-        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-        email = email.replaceAll("\\.", "");
-        email = email.replaceAll("@", "");
-        reference = FirebaseDatabase.getInstance().getReference(lobby_in);
-        reference.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+        userReference = FirebaseDatabase.getInstance().getReference(lobby_in + FirebaseAuth.getInstance().getCurrentUser().getUid());
+        userReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                cash = dataSnapshot.child("cash").getValue(String.class);
-                if (globalMenu != null) {
-                    myItem = globalMenu.findItem(R.id.moneyBox);
-                    myItem.setTitle("" + cash);
-                }
+                user = dataSnapshot.getValue(User.class);
+                cash = user.getCash();
+                setMoney(cash);
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
+        });
+
+        button_100.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Integer.parseInt(cash) < 100) {
+                    Toast.makeText(getContext(), "Not Enough Money", Toast.LENGTH_SHORT).show();
+                } else {
+                    if (flag != 0) {
+                        timer.cancel();
+                    }
+                    counter = 10;
+                    final String newPrice = "" + (Double.parseDouble(player.getBidprice()) + 100);
+                    player.setBidprice(newPrice);
+                    deductCash(100);
+                    playerReference.setValue(player).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            bid_price.setText("" + (newPrice));
+                        }
+                    });
+                    timer = new CountDownTimer(11000, 1000) {
+                        public void onTick(long millisUntilFinished) {
+                            try {
+                                timer_text_view.setText(String.valueOf(counter));
+                            } catch (Exception e) {
+                            }
+                            counter--;
+                            flag = 1;
+                        }
+
+                        public void onFinish() {
+                            timer_text_view.setText("SOLD!!");
+                        }
+                    }.start();
+                }
+            }
+
         });
 
 //        button_1000.setOnClickListener(new View.OnClickListener() {
@@ -122,7 +177,7 @@ public class HomeFragment extends Fragment {
 //            public void onClick(View v) {
 //                final String newPrice = ""+(Double.parseDouble(player.getBidprice())+1000);
 //                player.setBidprice(newPrice);
-//                mDatabaseReference.setValue(player).addOnSuccessListener(new OnSuccessListener<Void>() {
+//                playerReference.setValue(player).addOnSuccessListener(new OnSuccessListener<Void>() {
 //                    @Override
 //                    public void onSuccess(Void aVoid) {
 //                        bid_price.setText(""+(newPrice));
@@ -135,7 +190,7 @@ public class HomeFragment extends Fragment {
 //            public void onClick(View v) {
 //                final String newPrice = ""+(Double.parseDouble(player.getBidprice())+500);
 //                player.setBidprice(newPrice);
-//                mDatabaseReference.setValue(player).addOnSuccessListener(new OnSuccessListener<Void>() {
+//                playerReference.setValue(player).addOnSuccessListener(new OnSuccessListener<Void>() {
 //                    @Override
 //                    public void onSuccess(Void aVoid) {
 //                        bid_price.setText(""+(newPrice));
@@ -143,40 +198,14 @@ public class HomeFragment extends Fragment {
 //                });
 //            }
 //        });
-        button_100.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (flag != 0) {
-                    timer.cancel();
-                }
-                counter = 10;
-                final String newPrice = ""+(Double.parseDouble(player.getBidprice())+100);
-                player.setBidprice(newPrice);
-                mDatabaseReference.setValue(player).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        bid_price.setText(""+(newPrice));
-                    }
-                });
-                timer = new CountDownTimer(11000, 1000) {
-                    public void onTick(long millisUntilFinished) {
-                        timer_text_view.setText(String.valueOf(counter));
-                        counter--;
-                        flag = 1;
-                    }
-
-                    public void onFinish() {
-                        timer_text_view.setText("SOLD!!");
-                    }
-                }.start();
-            }
-
-
-        });
-
-
     }
 
+    public void deductCash(int deduct) {
+        int totalCash = Integer.parseInt(user.getCash());
+        int cashRemain = totalCash - deduct;
+        user.setCash("" + cashRemain);
+        userReference.setValue(user);
+    }
 
     @Override
     public void onDestroyView() {

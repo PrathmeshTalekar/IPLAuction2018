@@ -32,6 +32,7 @@ import butterknife.ButterKnife;
 public class LobbyActivity extends AppCompatActivity {
 
     public static final int RC_SIGN_IN = 1;int x;
+    Player player;
     @BindView(R.id.lobby)
     Button create;
     @BindView(R.id.join)
@@ -49,10 +50,11 @@ public class LobbyActivity extends AppCompatActivity {
     int joinPin, createPin;
     Intent intent;
     private FirebaseDatabase mFirebaseDatabase;
-    private DatabaseReference mDatabaseReference,reference, jreference;
+    int i;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
     String path;
+    private DatabaseReference mDatabaseReference, reference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,7 +114,6 @@ public class LobbyActivity extends AppCompatActivity {
         });
     }
 
-
     void joinLobby(String email, final int pin) {
         email = email.replaceAll("\\.", "");
         email = email.replaceAll("@", "");
@@ -120,44 +121,44 @@ public class LobbyActivity extends AppCompatActivity {
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mDatabaseReference = mFirebaseDatabase.getReference(path);
 
-            mDatabaseReference.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    try {
-                        x = dataSnapshot.child("pin").getValue(Integer.class);
-                        if (x != pin) {
-                            Toast.makeText(LobbyActivity.this, "Incorrect Pin", Toast.LENGTH_SHORT).show();
-                        } else if (x == pin) {
-                            display_name = dName.getText().toString();
-                            if (display_name.length() == 0) {
-                                Toast.makeText(LobbyActivity.this, "Enter Display Name", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(LobbyActivity.this, "Joining", Toast.LENGTH_SHORT).show();
-                                jreference = FirebaseDatabase.getInstance().getReference(path);
-                                jreference.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(new User(display_name, "" + 99999999, "" + 0))
-                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void aVoid) {
-                                                intent.putExtra("lobby_path", path);
-                                                startActivity(new Intent(LobbyActivity.this, MainActivity.class));
-                                                finish();
-                                            }
-                                        });
-                            }
+        mDatabaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                try {
+                    x = dataSnapshot.child("pin").getValue(Integer.class);
+                    if (x != pin) {
+                        Toast.makeText(LobbyActivity.this, "Incorrect Pin", Toast.LENGTH_SHORT).show();
+                    } else if (x == pin) {
+                        display_name = dName.getText().toString();
+                        if (display_name.length() == 0) {
+                            Toast.makeText(LobbyActivity.this, "Enter Display Name", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(LobbyActivity.this, "Joining", Toast.LENGTH_SHORT).show();
+                            reference = FirebaseDatabase.getInstance().getReference(path);
+                            reference.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(new User(display_name, "" + 99999999, "" + 0))
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            intent.putExtra("lobby_path", path);
+                                            startActivity(intent);
+                                            finish();
+                                        }
+                                    });
                         }
-                    }catch (Exception e){
-                        Toast.makeText(LobbyActivity.this,"Invalid Host Email",Toast.LENGTH_SHORT).show();
                     }
+                } catch (Exception e) {
+                    Toast.makeText(LobbyActivity.this, "Invalid Host Email", Toast.LENGTH_SHORT).show();
                 }
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                }
-            });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
 
     }
 
     void createLobby(int pin) {
-
         String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         email = email.replaceAll("\\.", "");
         email = email.replaceAll("@", "");
@@ -173,36 +174,23 @@ public class LobbyActivity extends AppCompatActivity {
                 public void onSuccess(Void aVoid) {
 
                     reference.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(new User(display_name, "" + 99999999, "" + 0));
-                    reference.child("player1").setValue("" + 5200000);
-                    reference.child("player2").setValue("" + 4000000);
-                    reference.child("player3").setValue("" + 9000000);
-                    reference.child("player4").setValue("" + 2800000);
-                    reference.child("player5").setValue("" + 3000000);
-                    reference.child("player6").setValue("" + 2000000);
-                    reference.child("player7").setValue("" + 3000000);
-                    reference.child("player8").setValue("" + 1800000);
-                    reference.child("player9").setValue("" + 7800000);
-                    reference.child("player10").setValue("" + 11000000);
-                    reference.child("player11").setValue("" + 7600000);
-                    reference.child("player12").setValue("" + 9400000);
-                    reference.child("player13").setValue("" + 2000000);
-                    reference.child("player14").setValue("" + 4200000);
-                    reference.child("player15").setValue("" + 3000000);
-                    reference.child("player16").setValue("" + 4200000);
-                    reference.child("player17").setValue("" + 6000000);
-                    reference.child("player18").setValue("" + 9000000);
-                    reference.child("player19").setValue("" + 6200000);
-                    reference.child("player20").setValue("" + 11500000);
-                    reference.child("player21").setValue("" + 5400000);
-                    reference.child("player22").setValue("" + 12500000);
-                    reference.child("player23").setValue("" + 6400000);
-                    reference.child("player24").setValue("" + 4000000);
-                    reference.child("player25").setValue("" + 7400000);
-                    reference.child("player26").setValue("" + 6200000);
-                    reference.child("player27").setValue("" + 7400000);
-                    reference.child("player28").setValue("" + 7400000);
-                    reference.child("player29").setValue("" + 8000000);
-                    reference.child("player30").setValue("" + 4400000);
+
+                    for (i = 1; i <= 30; i++) {
+                        mFirebaseDatabase = FirebaseDatabase.getInstance();
+                        mDatabaseReference = mFirebaseDatabase.getReference("players/player" + i + "/");
+                        mDatabaseReference.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                player = dataSnapshot.getValue(Player.class);
+                                reference.child(dataSnapshot.getKey()).setValue(player);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
                     intent.putExtra("lobby_path", path);
                     startActivity(intent);
                     finish();
