@@ -25,19 +25,25 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
+
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+
+import static java.text.DateFormat.getDateTimeInstance;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class HomeFragment extends Fragment {
-    //@BindView(R.id.button_100)Button button_100;
-    //@BindView(R.id.bid_price)TextView bid_price;
     private FirebaseDatabase mFirebaseDatabase;
     @BindView(R.id.bid_price)
     TextView bid_price;
@@ -55,6 +61,8 @@ public class HomeFragment extends Fragment {
     Button button_1000;
     @BindView(R.id.timer_text)
     TextView timer_text_view;
+    @BindView(R.id.owner)
+    TextView owner;
     CountDownTimer timer;
     int counter = 10, flag;
     String lobby_in, cash;
@@ -64,7 +72,9 @@ public class HomeFragment extends Fragment {
     Menu globalMenu;
     User user;
     String points;
-    private DatabaseReference playerReference, userReference;
+    int i = 1;
+    //    long time;
+    private DatabaseReference playerReference, userReference, winnerReference;
 
     public void setGlobalMenu(Menu globalMenu) {
         this.globalMenu = globalMenu;
@@ -100,20 +110,69 @@ public class HomeFragment extends Fragment {
         return rootView;
     }
 
+    public static String getTimeDate(long timestamp) {
+        try {
+            DateFormat dateFormat = getDateTimeInstance();
+            Date netDate = (new Date(timestamp));
+            return dateFormat.format(netDate);
+        } catch (Exception e) {
+            return "date";
+        }
+    }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+//        while (i<=30) {
 
-        playerReference = FirebaseDatabase.getInstance().getReference(lobby_in + "player" + 1);
+        playerReference = FirebaseDatabase.getInstance().getReference(lobby_in + "players/player" + i);
         playerReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                player=dataSnapshot.getValue(Player.class);
+                player = dataSnapshot.getValue(Player.class);
                 name.setText(player.getName());
                 base_price.setText(player.getPrice());
                 bid_price.setText(player.getBidprice());
+                owner.setText(player.getOwnerName());
                 points = player.getPoints();
+                if (dataSnapshot.child("timestamp").exists()) {
+//                    time =dataSnapshot.child("timestamp").getValue(Long.class) ;
+                    if (flag != 0) {
+                        timer.cancel();
+                    }
+                    counter = 10;
+                    timer = new CountDownTimer(11000, 1000) {
+                        public void onTick(long millisUntilFinished) {
+                            try {
+                                timer_text_view.setText("" + counter);
+                            } catch (Exception e) {
+                            }
+                            counter--;
+                            flag = 1;
+                        }
+
+                        public void onFinish() {
+                            timer_text_view.setText("SOLD!!");
+                            if (player.getSold() != 1) {
+                                player.setSold(1);
+                                playerReference.child("sold").setValue(1).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        timer.cancel();
+                                        if (player.getOwnedBy().compareTo(FirebaseAuth.getInstance().getCurrentUser().getUid()) == 0) {
+                                            change(Double.parseDouble(player.getBidprice()), Double.parseDouble(player.getPoints()));
+//                                            winnerReference = FirebaseDatabase.getInstance().getReference(lobby_in + player.getOwnedBy());
+//                                            winnerReference.child("cash").setValue(Double.parseDouble(player.getBidprice()) - Double.parseDouble(player.getPrice()))
+                                        }
+                                        i++;
+                                    }
+                                });
+                            }
+                        }
+                    }.start();
+                }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -128,6 +187,7 @@ public class HomeFragment extends Fragment {
                 cash = user.getCash();
                 setMoney(cash);
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -137,79 +197,43 @@ public class HomeFragment extends Fragment {
         button_100.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Integer.parseInt(cash) < 100) {
+                if (Double.parseDouble(player.getBidprice()) - Double.parseDouble(player.getPrice()) + 100 > Double.parseDouble(user.getCash())) {
                     Toast.makeText(getContext(), "Not Enough Money", Toast.LENGTH_SHORT).show();
+                } else if (player.getSold() == 1) {
+                    Toast.makeText(getContext(), "Player already sold", Toast.LENGTH_SHORT).show();
                 } else {
-                    if (flag != 0) {
+                    if (flag != 0)
                         timer.cancel();
-                    }
-                    counter = 10;
                     final String newPrice = "" + (Double.parseDouble(player.getBidprice()) + 100);
                     player.setBidprice(newPrice);
-                    deductCash(100);
-                    playerReference.setValue(player).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            bid_price.setText("" + (newPrice));
-                        }
-                    });
-                    timer = new CountDownTimer(11000, 1000) {
-                        public void onTick(long millisUntilFinished) {
-                            try {
-                                timer_text_view.setText(String.valueOf(counter));
-                            } catch (Exception e) {
-                            }
-                            counter--;
-                            flag = 1;
-                        }
-
-                        public void onFinish() {
-                            timer_text_view.setText("SOLD!!");
-                        }
-                    }.start();
+                    player.setOwnerName(user.getDisplayName());
+                    player.setOwnedBy(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    playerReference.child("timestamp").setValue(ServerValue.TIMESTAMP);
+                    playerReference.child("ownedBy").setValue(player.getOwnedBy());
+                    playerReference.child("ownerName").setValue(player.getOwnerName());
+                    playerReference.child("bidprice").setValue(player.getBidprice());
                 }
             }
 
         });
-
-//        button_1000.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                final String newPrice = ""+(Double.parseDouble(player.getBidprice())+1000);
-//                player.setBidprice(newPrice);
-//                playerReference.setValue(player).addOnSuccessListener(new OnSuccessListener<Void>() {
-//                    @Override
-//                    public void onSuccess(Void aVoid) {
-//                        bid_price.setText(""+(newPrice));
-//                    }
-//                });
-//            }
-//        });
-//        button_500.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                final String newPrice = ""+(Double.parseDouble(player.getBidprice())+500);
-//                player.setBidprice(newPrice);
-//                playerReference.setValue(player).addOnSuccessListener(new OnSuccessListener<Void>() {
-//                    @Override
-//                    public void onSuccess(Void aVoid) {
-//                        bid_price.setText(""+(newPrice));
-//                    }
-//                });
-//            }
-//        });
+//        }
     }
 
-    public void deductCash(int deduct) {
-        int totalCash = Integer.parseInt(user.getCash());
-        int cashRemain = totalCash - deduct;
-        user.setCash("" + cashRemain);
-        userReference.setValue(user);
-    }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
     }
+
+    public void change(double deduct, double add) {
+        double totalCash = Double.parseDouble(user.getCash());
+        double cashRemain = totalCash - deduct;
+        user.setCash("" + cashRemain);
+        double basePoints = Double.parseDouble(user.getPoints());
+        double newPoints = basePoints + add;
+        user.setPoints("" + newPoints);
+        userReference.setValue(user);
+    }
+
 }

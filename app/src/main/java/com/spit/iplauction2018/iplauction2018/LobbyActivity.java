@@ -116,6 +116,7 @@ public class LobbyActivity extends AppCompatActivity {
         });
     }
 
+    int counter = 1;
     void joinLobby(String email, final int pin) {
         email = email.replaceAll("\\.", "");
         email = email.replaceAll("@", "");
@@ -123,7 +124,7 @@ public class LobbyActivity extends AppCompatActivity {
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mDatabaseReference = mFirebaseDatabase.getReference(path);
 
-        mDatabaseReference.addValueEventListener(new ValueEventListener() {
+        mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 try {
@@ -137,7 +138,7 @@ public class LobbyActivity extends AppCompatActivity {
                         } else {
                             Toast.makeText(LobbyActivity.this, "Joining", Toast.LENGTH_SHORT).show();
                             reference = FirebaseDatabase.getInstance().getReference(path);
-                            reference.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(new User(display_name, "" + 99999999, "" + 0))
+                            reference.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(new User(display_name, "" + 9999999, "" + 0))
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {
@@ -174,28 +175,32 @@ public class LobbyActivity extends AppCompatActivity {
             reference.child("pin").setValue(pin).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
+                    reference.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(new User(display_name, "" + 9999999, "" + 0))
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    mFirebaseDatabase = FirebaseDatabase.getInstance();
+                                    mDatabaseReference = mFirebaseDatabase.getReference("players/");
+                                    mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                            reference.child("players").setValue(dataSnapshot.getValue()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    intent.putExtra("lobby_path", path);
+                                                    startActivity(intent);
+                                                    finish();
+                                                }
+                                            });
+                                        }
 
-                    reference.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(new User(display_name, "" + 99999999, "" + 0));
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                    for (i = 1; i <= 30; i++) {
-                        mFirebaseDatabase = FirebaseDatabase.getInstance();
-                        mDatabaseReference = mFirebaseDatabase.getReference("players/player" + i + "/");
-                        mDatabaseReference.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                player = dataSnapshot.getValue(Player.class);
-                                reference.child(dataSnapshot.getKey()).setValue(player);
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
-                    }
-                    intent.putExtra("lobby_path", path);
-                    startActivity(intent);
-                    finish();
+                                        }
+                                    });
+                                }
+                            });
                 }
             });
         }

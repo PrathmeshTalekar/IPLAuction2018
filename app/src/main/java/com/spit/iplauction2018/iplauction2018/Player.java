@@ -1,23 +1,38 @@
 package com.spit.iplauction2018.iplauction2018;
 
+import java.util.Map;
+
 public class Player {
     private String name;
     private String bidprice;
     private String points;
     private String price;
     private String type;
+    private int sold;
+    private String ownedBy;
+    private String ownerName;
+
     public Player(){}
 
     public Player(String name, String type) {
         this.name = name;
         this.type = type;
     }
-    public Player(String name, String bidprice, String points, String price, String type){
-        this.name=name;
-        this.price=price;
-        this.bidprice=bidprice;
-        this.type=type;
-        this.points=points;
+
+    public String getOwnerName() {
+        return ownerName;
+    }
+
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
+    }
+
+    public int getSold() {
+        return sold;
+    }
+
+    public void setSold(int sold) {
+        this.sold = sold;
     }
 
     public String getName() {
@@ -58,5 +73,13 @@ public class Player {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getOwnedBy() {
+        return ownedBy;
+    }
+
+    public void setOwnedBy(String ownedBy) {
+        this.ownedBy = ownedBy;
     }
 }

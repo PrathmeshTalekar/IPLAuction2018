@@ -198,6 +198,17 @@
             android:text="No bids yet"
             android:textColor="@color/black"
             android:textSize="30dp" />
+
+        <TextView
+            android:id="@+id/owner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="No owner"
+            android:textColor="@color/black"
+            android:textSize="30dp" />
     </LinearLayout>
 
 </FrameLayout>

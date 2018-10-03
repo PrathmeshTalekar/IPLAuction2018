@@ -109,12 +109,10 @@ public class MainActivity extends AppCompatActivity
                 if (homeFragment == null) {
                     homeFragment = new HomeFragment();
                     if (menu == null) {
-                        Toast.makeText(this, "Passing menu empty", Toast.LENGTH_SHORT).show();
                         Runnable r = new Runnable() {
                             @Override
                             public void run() {
                                 ((HomeFragment) fragment).setGlobalMenu(menu);
-                                Toast.makeText(MainActivity.this, "Updated menu", Toast.LENGTH_SHORT).show();
                             }
                         };
                         Handler h = new Handler();

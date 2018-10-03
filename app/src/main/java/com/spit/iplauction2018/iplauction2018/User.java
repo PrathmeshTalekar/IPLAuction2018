@@ -6,9 +6,7 @@ public class User {
     String displayName;
     String cash;
     String points;
-    String batsman;
-    String bowler;
-    String wicketkeeper;
+    String players;
     String lobby;
 
     public User() {
@@ -30,5 +28,21 @@ public class User {
 
     public void setCash(String cash) {
         this.cash = cash;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public String getPoints() {
+        return points;
+    }
+
+    public void setPoints(String points) {
+        this.points = points;
     }
 }
