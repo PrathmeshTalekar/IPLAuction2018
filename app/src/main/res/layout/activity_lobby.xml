@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey"
+    android:background="@color/background"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
@@ -15,7 +15,8 @@
         <LinearLayout
             android:padding="8dp"
             android:layout_width="match_parent"
-            android:background="@color/blueBackground"
+            android:background="@color/rules"
+
             android:layout_height="wrap_content"
             android:orientation="vertical">
         <EditText
@@ -38,7 +39,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@color/blueBackground"
+    android:background="@color/rules"
     android:padding="8dp">
     <EditText
         android:id="@+id/create_pin"
@@ -51,6 +52,7 @@
         android:id="@+id/lobby"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@color/cardBackground"
         android:text="Create" />
 </LinearLayout>
     </android.support.v7.widget.CardView>
@@ -66,7 +68,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="@color/blueBackground"
+            android:background="@color/rules"
             android:padding="8dp">
             <EditText
                 android:id="@+id/join_email"
@@ -86,6 +88,7 @@
                 android:id="@+id/join"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@color/cardBackground"
                 android:text="Join" />
         </LinearLayout>
     </android.support.v7.widget.CardView>
