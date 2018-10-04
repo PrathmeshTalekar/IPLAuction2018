@@ -64,17 +64,18 @@ public class HomeFragment extends Fragment {
     @BindView(R.id.owner)
     TextView owner;
     CountDownTimer timer;
-    int counter = 10, flag;
+    int counter = 10, flag = 0;
     String lobby_in, cash;
     View rootView;
     MenuItem myItem;
     private Unbinder unbinder;
     Menu globalMenu;
-    User user;
+    User user = new User();
     String points;
     int i = 1;
+    int j = 1;
     //    long time;
-    private DatabaseReference playerReference, userReference, winnerReference;
+    private DatabaseReference playerReference, userReference;
 
     public void setGlobalMenu(Menu globalMenu) {
         this.globalMenu = globalMenu;
@@ -135,24 +136,25 @@ public class HomeFragment extends Fragment {
                 bid_price.setText(player.getBidprice());
                 owner.setText(player.getOwnerName());
                 points = player.getPoints();
-                if (dataSnapshot.child("timestamp").exists()) {
+                if (dataSnapshot.child("timestamp").exists() && player.getSold() != 1) {
 //                    time =dataSnapshot.child("timestamp").getValue(Long.class) ;
                     if (flag != 0) {
                         timer.cancel();
+                        timer = null;
                     }
-                    counter = 10;
-                    timer = new CountDownTimer(11000, 1000) {
+                    timer = new CountDownTimer(10000, 1000) {
                         public void onTick(long millisUntilFinished) {
                             try {
-                                timer_text_view.setText("" + counter);
+                                timer_text_view.setText("" + counter--);
                             } catch (Exception e) {
                             }
-                            counter--;
                             flag = 1;
                         }
-
                         public void onFinish() {
-                            timer_text_view.setText("SOLD!!");
+                            try {
+                                timer_text_view.setText("SOLD!!");
+                            } catch (Exception e) {
+                            }
                             if (player.getSold() != 1) {
                                 player.setSold(1);
                                 playerReference.child("sold").setValue(1).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -161,8 +163,6 @@ public class HomeFragment extends Fragment {
                                         timer.cancel();
                                         if (player.getOwnedBy().compareTo(FirebaseAuth.getInstance().getCurrentUser().getUid()) == 0) {
                                             change(Double.parseDouble(player.getBidprice()), Double.parseDouble(player.getPoints()));
-//                                            winnerReference = FirebaseDatabase.getInstance().getReference(lobby_in + player.getOwnedBy());
-//                                            winnerReference.child("cash").setValue(Double.parseDouble(player.getBidprice()) - Double.parseDouble(player.getPrice()))
                                         }
                                         i++;
                                     }
@@ -183,7 +183,10 @@ public class HomeFragment extends Fragment {
         userReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                user = dataSnapshot.getValue(User.class);
+                user.setDisplayName(dataSnapshot.child("displayName").getValue(String.class));
+                user.setCash(dataSnapshot.child("cash").getValue(String.class));
+                user.setPoints(dataSnapshot.child("points").getValue(String.class));
+                user.setNumberOfPlayers(dataSnapshot.child("numberOfPlayers").getValue(Integer.class));
                 cash = user.getCash();
                 setMoney(cash);
             }
@@ -197,13 +200,12 @@ public class HomeFragment extends Fragment {
         button_100.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Double.parseDouble(player.getBidprice()) - Double.parseDouble(player.getPrice()) + 100 > Double.parseDouble(user.getCash())) {
+                if (Double.parseDouble(player.getBidprice()) + 100 > Double.parseDouble(user.getCash())) {
                     Toast.makeText(getContext(), "Not Enough Money", Toast.LENGTH_SHORT).show();
                 } else if (player.getSold() == 1) {
                     Toast.makeText(getContext(), "Player already sold", Toast.LENGTH_SHORT).show();
                 } else {
-                    if (flag != 0)
-                        timer.cancel();
+                    counter = 11;
                     final String newPrice = "" + (Double.parseDouble(player.getBidprice()) + 100);
                     player.setBidprice(newPrice);
                     player.setOwnerName(user.getDisplayName());
@@ -233,7 +235,12 @@ public class HomeFragment extends Fragment {
         double basePoints = Double.parseDouble(user.getPoints());
         double newPoints = basePoints + add;
         user.setPoints("" + newPoints);
-        userReference.setValue(user);
+        user.setNumberOfPlayers(user.getNumberOfPlayers() + 1);
+        userReference.child("cash").setValue(user.getCash());
+        userReference.child("points").setValue(user.getPoints());
+        userReference.child("numberOfPlayers").setValue(user.getNumberOfPlayers());
+        userReference.child("players").child("player" + j++).setValue(player);
+        userReference.child("players").child("numberOfPlayers").setValue(user.getNumberOfPlayers());
     }
 
 }

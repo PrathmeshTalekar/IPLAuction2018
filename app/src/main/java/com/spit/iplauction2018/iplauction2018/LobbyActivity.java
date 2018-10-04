@@ -98,6 +98,7 @@ public class LobbyActivity extends AppCompatActivity {
                 }else if(jPin.getText().toString().length()==0){
                     Toast.makeText(LobbyActivity.this, "Enter Lobby Pin", Toast.LENGTH_SHORT).show();
                 }else {
+                    join.setEnabled(false);
                     joinPin = Integer.parseInt(jPin.getText().toString());
                     joinLobby(joinEmail, joinPin);
                 }
@@ -109,6 +110,7 @@ public class LobbyActivity extends AppCompatActivity {
                 if(cPin.getText().toString().length()==0){
                     Toast.makeText(LobbyActivity.this, "Enter Lobby Pin", Toast.LENGTH_SHORT).show();
                 }else{
+                    create.setEnabled(false);
                     createPin = Integer.parseInt(cPin.getText().toString());
                     createLobby(createPin);
                 }

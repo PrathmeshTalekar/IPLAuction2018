@@ -6,7 +6,7 @@ public class User {
     String displayName;
     String cash;
     String points;
-    String players;
+    int numberOfPlayers;
     String lobby;
 
     public User() {
@@ -44,5 +44,13 @@ public class User {
 
     public void setPoints(String points) {
         this.points = points;
+    }
+
+    public int getNumberOfPlayers() {
+        return numberOfPlayers;
+    }
+
+    public void setNumberOfPlayers(int numberOfPlayers) {
+        this.numberOfPlayers = numberOfPlayers;
     }
 }

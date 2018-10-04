@@ -132,6 +132,7 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.team:
                 fragment = new TeamFragment();
+                fragment.setArguments(frag_bundle);
                 break;
             case R.id.rules:
                 fragment = new RulesFragment();

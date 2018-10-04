@@ -11,6 +11,7 @@ public class Player {
     private int sold;
     private String ownedBy;
     private String ownerName;
+    long timestamp;
 
     public Player(){}
 
