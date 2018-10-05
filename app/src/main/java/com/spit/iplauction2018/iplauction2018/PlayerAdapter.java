@@ -8,8 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 import android.support.v4.app.Fragment;
+import android.widget.Toast;
+
+import com.ramotion.foldingcell.FoldingCell;
 
 import java.util.ArrayList;
 
@@ -28,11 +32,39 @@ public class PlayerAdapter extends ArrayAdapter<Player> {
             listItemView = LayoutInflater.from(getContext()).inflate(R.layout.list_view, parent, false);
         }
 
+        final FoldingCell fc = (FoldingCell)listItemView.findViewById(R.id.foldingCell);
+        fc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fc.toggle(false);
+            }
+        });
+
         TextView nameTextView = (TextView) listItemView.findViewById(R.id.playername);
         nameTextView.setText(currentPlayer.getName());
+        TextView price = (TextView) listItemView.findViewById(R.id.bid_price);
+        price.setText(currentPlayer.getPrice());
+        TextView finalPrice = (TextView) listItemView.findViewById(R.id.final_price);
+        finalPrice.setText(currentPlayer.getBidprice());
+        TextView expandedName = (TextView) listItemView.findViewById(R.id.playernameExpanded);
+        expandedName.setText(currentPlayer.getName());
 
         TextView typeTextView = (TextView) listItemView.findViewById(R.id.playertype);
         typeTextView.setText(currentPlayer.getType());
+
+        Button sell = (Button)listItemView.findViewById(R.id.sell);
+        sell.setTag(currentPlayer);
+        sell.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Player clickedPlayer = (Player)v.getTag();
+                Toast.makeText(getContext(), "Selling Player "+clickedPlayer.getName(), Toast.LENGTH_SHORT).show();
+
+
+
+            }
+        });
+
 
         return listItemView;
     }

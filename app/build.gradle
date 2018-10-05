@@ -16,6 +16,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
 }
 
 dependencies {
@@ -34,6 +35,8 @@ dependencies {
 
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    implementation 'com.ramotion.foldingcell:folding-cell:1.2.2'
+    implementation 'com.heinrichreimersoftware:material-intro:1.6.2'
 }
 
 apply plugin: 'com.google.gms.google-services'

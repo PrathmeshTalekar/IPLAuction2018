@@ -6,6 +6,7 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -63,6 +64,8 @@ public class HomeFragment extends Fragment {
     TextView timer_text_view;
     @BindView(R.id.owner)
     TextView owner;
+    @BindView(R.id.skip)
+    Button button_skip;
     CountDownTimer timer;
     int counter = 10, flag = 0;
     String lobby_in, cash;
@@ -72,6 +75,7 @@ public class HomeFragment extends Fragment {
     Menu globalMenu;
     User user = new User();
     String points;
+    boolean skipFlag=true;
     int i = 1;
     int j = 1;
     //    long time;
@@ -125,7 +129,10 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 //        while (i<=30) {
-
+        if(skipFlag){
+            button_skip.setText("Start");
+            button_100.setEnabled(false);
+        }
         playerReference = FirebaseDatabase.getInstance().getReference(lobby_in + "players/player" + i);
         playerReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -166,6 +173,8 @@ public class HomeFragment extends Fragment {
                                             change(Double.parseDouble(player.getBidprice()), Double.parseDouble(player.getPoints()));
                                         }
                                         i++;
+                                        button_skip.setEnabled(true);
+                                        button_100.setEnabled(true);
                                     }
                                 });
                             }
@@ -218,6 +227,21 @@ public class HomeFragment extends Fragment {
                 }
             }
 
+        });
+        button_skip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                playerReference.child("timestamp").setValue(ServerValue.TIMESTAMP);
+                if(!skipFlag){
+                    playerReference.child("timestamp").setValue(ServerValue.TIMESTAMP);
+                    button_skip.setEnabled(false);
+                    button_100.setEnabled(false);
+                }else {
+                    skipFlag=false;
+                    button_skip.setText("Skip");
+                    button_100.setEnabled(true);
+                }
+            }
         });
 //        }
     }

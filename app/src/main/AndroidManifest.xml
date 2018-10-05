@@ -28,6 +28,9 @@
         <activity android:name=".LobbyActivity"
             android:screenOrientation="portrait"
             android:theme="@style/LoginTheme"></activity>
+
+        <activity android:name=".Intro"
+            android:theme="@style/Theme.Intro"/>/>
     </application>
 
 </manifest>

@@ -62,7 +62,7 @@ public class TeamFragment extends Fragment {
                     numberOfPlayers = dataSnapshot.child("numberOfPlayers").getValue(Integer.class);
                     for (int i = 1; i <= numberOfPlayers; i++) {
                         displayPlayer = dataSnapshot.child("player" + i).getValue(Player.class);
-                        player.add(new Player(displayPlayer.getName(), displayPlayer.getType()));
+                        player.add(displayPlayer);
                     }
                     PlayerAdapter adapter = new PlayerAdapter(getContext(), player);
                     ListView listView = (ListView) getActivity().findViewById(R.id.list);
