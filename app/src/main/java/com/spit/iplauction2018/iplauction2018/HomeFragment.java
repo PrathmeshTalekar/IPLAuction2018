@@ -141,8 +141,9 @@ public class HomeFragment extends Fragment {
                     if (flag != 0) {
                         timer.cancel();
                         timer = null;
+                        counter = 10;
                     }
-                    timer = new CountDownTimer(10000, 1000) {
+                    timer = new CountDownTimer(11000, 1000) {
                         public void onTick(long millisUntilFinished) {
                             try {
                                 timer_text_view.setText("" + counter--);
