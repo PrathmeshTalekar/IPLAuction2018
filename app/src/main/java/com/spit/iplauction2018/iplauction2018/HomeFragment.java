@@ -56,10 +56,22 @@ public class HomeFragment extends Fragment {
     TextView base_price;
     @BindView(R.id.button_100)
     Button button_100;
+    @BindView(R.id.button_200)
+    Button button_200;
     @BindView(R.id.button_500)
     Button button_500;
     @BindView(R.id.button_1000)
     Button button_1000;
+    @BindView(R.id.button_2000)
+    Button button_2000;
+    @BindView(R.id.button_5000)
+    Button button_5000;
+    @BindView(R.id.button_10000)
+    Button button_10000;
+    @BindView(R.id.button_20000)
+    Button button_20000;
+    @BindView(R.id.button_50000)
+    Button button_50000;
     @BindView(R.id.timer_text)
     TextView timer_text_view;
     @BindView(R.id.owner)
@@ -132,6 +144,14 @@ public class HomeFragment extends Fragment {
         if(skipFlag){
             button_skip.setText("Start");
             button_100.setEnabled(false);
+            button_200.setEnabled(false);
+            button_500.setEnabled(false);
+            button_1000.setEnabled(false);
+            button_2000.setEnabled(false);
+            button_5000.setEnabled(false);
+            button_10000.setEnabled(false);
+            button_20000.setEnabled(false);
+            button_50000.setEnabled(false);
         }
         playerReference = FirebaseDatabase.getInstance().getReference(lobby_in + "players/player" + i);
         playerReference.addValueEventListener(new ValueEventListener() {
@@ -216,6 +236,7 @@ public class HomeFragment extends Fragment {
                     Toast.makeText(getContext(), "Player already sold", Toast.LENGTH_SHORT).show();
                 } else {
                     counter = 11;
+                    button_skip.setEnabled(false);
                     final String newPrice = "" + (Double.parseDouble(player.getBidprice()) + 100);
                     player.setBidprice(newPrice);
                     player.setOwnerName(user.getDisplayName());
@@ -226,8 +247,184 @@ public class HomeFragment extends Fragment {
                     playerReference.child("bidprice").setValue(player.getBidprice());
                 }
             }
-
         });
+
+        button_1000.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Double.parseDouble(player.getBidprice()) + 1000 > Double.parseDouble(user.getCash())) {
+                    Toast.makeText(getContext(), "Not Enough Money", Toast.LENGTH_SHORT).show();
+                } else if (player.getSold() == 1) {
+                    Toast.makeText(getContext(), "Player already sold", Toast.LENGTH_SHORT).show();
+                } else {
+                    counter = 11;
+                    button_skip.setEnabled(false);
+                    final String newPrice = "" + (Double.parseDouble(player.getBidprice()) + 1000);
+                    player.setBidprice(newPrice);
+                    player.setOwnerName(user.getDisplayName());
+                    player.setOwnedBy(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    playerReference.child("timestamp").setValue(ServerValue.TIMESTAMP);
+                    playerReference.child("ownedBy").setValue(player.getOwnedBy());
+                    playerReference.child("ownerName").setValue(player.getOwnerName());
+                    playerReference.child("bidprice").setValue(player.getBidprice());
+                }
+            }
+        });
+
+        button_10000.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Double.parseDouble(player.getBidprice()) + 10000 > Double.parseDouble(user.getCash())) {
+                    Toast.makeText(getContext(), "Not Enough Money", Toast.LENGTH_SHORT).show();
+                } else if (player.getSold() == 1) {
+                    Toast.makeText(getContext(), "Player already sold", Toast.LENGTH_SHORT).show();
+                } else {
+                    counter = 11;
+                    button_skip.setEnabled(false);
+                    final String newPrice = "" + (Double.parseDouble(player.getBidprice()) + 10000);
+                    player.setBidprice(newPrice);
+                    player.setOwnerName(user.getDisplayName());
+                    player.setOwnedBy(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    playerReference.child("timestamp").setValue(ServerValue.TIMESTAMP);
+                    playerReference.child("ownedBy").setValue(player.getOwnedBy());
+                    playerReference.child("ownerName").setValue(player.getOwnerName());
+                    playerReference.child("bidprice").setValue(player.getBidprice());
+                }
+            }
+        });
+
+        button_200.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Double.parseDouble(player.getBidprice()) + 200 > Double.parseDouble(user.getCash())) {
+                    Toast.makeText(getContext(), "Not Enough Money", Toast.LENGTH_SHORT).show();
+                } else if (player.getSold() == 1) {
+                    Toast.makeText(getContext(), "Player already sold", Toast.LENGTH_SHORT).show();
+                } else {
+                    counter = 11;
+                    button_skip.setEnabled(false);
+                    final String newPrice = "" + (Double.parseDouble(player.getBidprice()) + 200);
+                    player.setBidprice(newPrice);
+                    player.setOwnerName(user.getDisplayName());
+                    player.setOwnedBy(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    playerReference.child("timestamp").setValue(ServerValue.TIMESTAMP);
+                    playerReference.child("ownedBy").setValue(player.getOwnedBy());
+                    playerReference.child("ownerName").setValue(player.getOwnerName());
+                    playerReference.child("bidprice").setValue(player.getBidprice());
+                }
+            }
+        });
+
+        button_2000.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Double.parseDouble(player.getBidprice()) + 2000 > Double.parseDouble(user.getCash())) {
+                    Toast.makeText(getContext(), "Not Enough Money", Toast.LENGTH_SHORT).show();
+                } else if (player.getSold() == 1) {
+                    Toast.makeText(getContext(), "Player already sold", Toast.LENGTH_SHORT).show();
+                } else {
+                    counter = 11;
+                    button_skip.setEnabled(false);
+                    final String newPrice = "" + (Double.parseDouble(player.getBidprice()) + 2000);
+                    player.setBidprice(newPrice);
+                    player.setOwnerName(user.getDisplayName());
+                    player.setOwnedBy(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    playerReference.child("timestamp").setValue(ServerValue.TIMESTAMP);
+                    playerReference.child("ownedBy").setValue(player.getOwnedBy());
+                    playerReference.child("ownerName").setValue(player.getOwnerName());
+                    playerReference.child("bidprice").setValue(player.getBidprice());
+                }
+            }
+        });
+
+        button_20000.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Double.parseDouble(player.getBidprice()) + 20000 > Double.parseDouble(user.getCash())) {
+                    Toast.makeText(getContext(), "Not Enough Money", Toast.LENGTH_SHORT).show();
+                } else if (player.getSold() == 1) {
+                    Toast.makeText(getContext(), "Player already sold", Toast.LENGTH_SHORT).show();
+                } else {
+                    counter = 11;
+                    button_skip.setEnabled(false);
+                    final String newPrice = "" + (Double.parseDouble(player.getBidprice()) + 20000);
+                    player.setBidprice(newPrice);
+                    player.setOwnerName(user.getDisplayName());
+                    player.setOwnedBy(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    playerReference.child("timestamp").setValue(ServerValue.TIMESTAMP);
+                    playerReference.child("ownedBy").setValue(player.getOwnedBy());
+                    playerReference.child("ownerName").setValue(player.getOwnerName());
+                    playerReference.child("bidprice").setValue(player.getBidprice());
+                }
+            }
+        });
+
+        button_500.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Double.parseDouble(player.getBidprice()) + 500 > Double.parseDouble(user.getCash())) {
+                    Toast.makeText(getContext(), "Not Enough Money", Toast.LENGTH_SHORT).show();
+                } else if (player.getSold() == 1) {
+                    Toast.makeText(getContext(), "Player already sold", Toast.LENGTH_SHORT).show();
+                } else {
+                    counter = 11;
+                    button_skip.setEnabled(false);
+                    final String newPrice = "" + (Double.parseDouble(player.getBidprice()) + 500);
+                    player.setBidprice(newPrice);
+                    player.setOwnerName(user.getDisplayName());
+                    player.setOwnedBy(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    playerReference.child("timestamp").setValue(ServerValue.TIMESTAMP);
+                    playerReference.child("ownedBy").setValue(player.getOwnedBy());
+                    playerReference.child("ownerName").setValue(player.getOwnerName());
+                    playerReference.child("bidprice").setValue(player.getBidprice());
+                }
+            }
+        });
+
+        button_5000.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Double.parseDouble(player.getBidprice()) + 5000 > Double.parseDouble(user.getCash())) {
+                    Toast.makeText(getContext(), "Not Enough Money", Toast.LENGTH_SHORT).show();
+                } else if (player.getSold() == 1) {
+                    Toast.makeText(getContext(), "Player already sold", Toast.LENGTH_SHORT).show();
+                } else {
+                    counter = 11;
+                    button_skip.setEnabled(false);
+                    final String newPrice = "" + (Double.parseDouble(player.getBidprice()) + 5000);
+                    player.setBidprice(newPrice);
+                    player.setOwnerName(user.getDisplayName());
+                    player.setOwnedBy(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    playerReference.child("timestamp").setValue(ServerValue.TIMESTAMP);
+                    playerReference.child("ownedBy").setValue(player.getOwnedBy());
+                    playerReference.child("ownerName").setValue(player.getOwnerName());
+                    playerReference.child("bidprice").setValue(player.getBidprice());
+                }
+            }
+        });
+
+        button_50000.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Double.parseDouble(player.getBidprice()) + 50000 > Double.parseDouble(user.getCash())) {
+                    Toast.makeText(getContext(), "Not Enough Money", Toast.LENGTH_SHORT).show();
+                } else if (player.getSold() == 1) {
+                    Toast.makeText(getContext(), "Player already sold", Toast.LENGTH_SHORT).show();
+                } else {
+                    counter = 11;
+                    button_skip.setEnabled(false);
+                    final String newPrice = "" + (Double.parseDouble(player.getBidprice()) + 50000);
+                    player.setBidprice(newPrice);
+                    player.setOwnerName(user.getDisplayName());
+                    player.setOwnedBy(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    playerReference.child("timestamp").setValue(ServerValue.TIMESTAMP);
+                    playerReference.child("ownedBy").setValue(player.getOwnedBy());
+                    playerReference.child("ownerName").setValue(player.getOwnerName());
+                    playerReference.child("bidprice").setValue(player.getBidprice());
+                }
+            }
+        });
+
         button_skip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -236,10 +433,26 @@ public class HomeFragment extends Fragment {
                     playerReference.child("timestamp").setValue(ServerValue.TIMESTAMP);
                     button_skip.setEnabled(false);
                     button_100.setEnabled(false);
+                    button_200.setEnabled(false);
+                    button_500.setEnabled(false);
+                    button_1000.setEnabled(false);
+                    button_2000.setEnabled(false);
+                    button_5000.setEnabled(false);
+                    button_10000.setEnabled(false);
+                    button_20000.setEnabled(false);
+                    button_50000.setEnabled(false);
                 }else {
                     skipFlag=false;
                     button_skip.setText("Skip");
                     button_100.setEnabled(true);
+                    button_200.setEnabled(true);
+                    button_500.setEnabled(true);
+                    button_1000.setEnabled(true);
+                    button_2000.setEnabled(true);
+                    button_5000.setEnabled(true);
+                    button_10000.setEnabled(true);
+                    button_20000.setEnabled(true);
+                    button_50000.setEnabled(true);
                 }
             }
         });

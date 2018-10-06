@@ -12,9 +12,6 @@
         <item
             android:id="@+id/team"
             android:title="Team" />
-        <item
-            android:id="@+id/sell"
-            android:title="Sell" />
         <!--<item-->
             <!--android:id="@+id/lobby"-->
             <!--android:title="Lobby" />-->

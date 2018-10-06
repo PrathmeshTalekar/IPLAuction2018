@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="4dp"
-    android:elevation="8dp"
+    app:cardElevation="8dp"
     app:cardCornerRadius="5dp"
     tools:context=".TeamFragment">
 
@@ -28,54 +28,86 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
-                android:textSize="13dp"
+                android:textSize="18dp"
                 tools:text="Sachin Tendulkar" />
 
             <TextView
-                android:id="@+id/playertype"
+                android:id="@+id/playertypeExpanded"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
-                android:textSize="13dp"
+                android:textSize="18dp"
                 tools:text="Batsman" />
-            <TextView
-                android:id="@+id/bid_price"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textSize="13dp"
-                tools:text="Batsman" /><TextView
-            android:id="@+id/final_price"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:textSize="13dp"
-            tools:text="Batsman" />
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="18dp"
+                    android:text="Base Price : ₹" />
+                <TextView
+                    android:id="@+id/bid_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="18dp"
+                    tools:text="Batsman" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="18dp"
+                    android:text="Purchased At : ₹" />
+                <TextView
+                    android:id="@+id/final_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="18dp"
+                    tools:text="Batsman" />
+            </LinearLayout>
+
             <Button
                 android:id="@+id/sell"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/Base.TextAppearance.AppCompat.Widget.Button.Borderless.Colored"
-                android:text="Sell this player"
-
-                />
+                android:text="Sell this player" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/cell_title_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="3"
+            android:padding="4dp">
 
             <TextView
                 android:id="@+id/playername"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
-                android:textSize="13dp"
+                android:textSize="18dp"
+                android:layout_weight="2"
                 tools:text="Sachin Tendulkar" />
 
-
-
+            <TextView
+                android:id="@+id/playertype"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="18dp"
+                android:layout_weight="1"
+                tools:text="batsman"/>
         </LinearLayout>
     </com.ramotion.foldingcell.FoldingCell>
 

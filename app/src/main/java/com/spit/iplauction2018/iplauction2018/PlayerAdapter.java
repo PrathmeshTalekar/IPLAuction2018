@@ -42,15 +42,16 @@ public class PlayerAdapter extends ArrayAdapter<Player> {
 
         TextView nameTextView = (TextView) listItemView.findViewById(R.id.playername);
         nameTextView.setText(currentPlayer.getName());
+        TextView typeTextView = (TextView) listItemView.findViewById(R.id.playertype);
+        typeTextView.setText(currentPlayer.getType());
         TextView price = (TextView) listItemView.findViewById(R.id.bid_price);
         price.setText(currentPlayer.getPrice());
         TextView finalPrice = (TextView) listItemView.findViewById(R.id.final_price);
         finalPrice.setText(currentPlayer.getBidprice());
         TextView expandedName = (TextView) listItemView.findViewById(R.id.playernameExpanded);
         expandedName.setText(currentPlayer.getName());
-
-        TextView typeTextView = (TextView) listItemView.findViewById(R.id.playertype);
-        typeTextView.setText(currentPlayer.getType());
+        TextView expandedType = (TextView) listItemView.findViewById(R.id.playertypeExpanded);
+        expandedType.setText(currentPlayer.getType());
 
         Button sell = (Button)listItemView.findViewById(R.id.sell);
         sell.setTag(currentPlayer);

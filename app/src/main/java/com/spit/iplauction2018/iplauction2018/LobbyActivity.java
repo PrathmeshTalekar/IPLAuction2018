@@ -92,11 +92,12 @@ public class LobbyActivity extends AppCompatActivity {
             public void onClick(View v) {
                 joinEmail = jEmail.getText().toString();
                 if(joinEmail.length()==0&&jPin.getText().toString().length()==0){
-                    Toast.makeText(LobbyActivity.this, "Enter Host Email and Lobby Pin", Toast.LENGTH_SHORT).show();
+                    jEmail.setError("Enter Email Adress");
+                    jPin.setError("Enter Pin");
                 }else if(joinEmail.length()==0){
-                    Toast.makeText(LobbyActivity.this, "Enter Host Email", Toast.LENGTH_SHORT).show();
+                    jEmail.setError("Enter Email Adress");
                 }else if(jPin.getText().toString().length()==0){
-                    Toast.makeText(LobbyActivity.this, "Enter Lobby Pin", Toast.LENGTH_SHORT).show();
+                    jPin.setError("Enter Pin");
                 }else {
                     join.setEnabled(false);
                     joinPin = Integer.parseInt(jPin.getText().toString());
@@ -108,7 +109,7 @@ public class LobbyActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(cPin.getText().toString().length()==0){
-                    Toast.makeText(LobbyActivity.this, "Enter Lobby Pin", Toast.LENGTH_SHORT).show();
+                    cPin.setError("Enter Pin");
                 }else{
                     create.setEnabled(false);
                     createPin = Integer.parseInt(cPin.getText().toString());
@@ -132,11 +133,13 @@ public class LobbyActivity extends AppCompatActivity {
                 try {
                     x = dataSnapshot.child("pin").getValue(Integer.class);
                     if (x != pin) {
-                        Toast.makeText(LobbyActivity.this, "Incorrect Pin", Toast.LENGTH_SHORT).show();
+                        jPin.setError("Incorrect Pin");
+                        join.setEnabled(true);
                     } else if (x == pin) {
                         display_name = dName.getText().toString();
                         if (display_name.length() == 0) {
-                            Toast.makeText(LobbyActivity.this, "Enter Display Name", Toast.LENGTH_SHORT).show();
+                            dName.setError("Enter Name");
+                            join.setEnabled(true);
                         } else {
                             Toast.makeText(LobbyActivity.this, "Joining", Toast.LENGTH_SHORT).show();
                             reference = FirebaseDatabase.getInstance().getReference(path);
@@ -152,7 +155,8 @@ public class LobbyActivity extends AppCompatActivity {
                         }
                     }
                 } catch (Exception e) {
-                    Toast.makeText(LobbyActivity.this, "Invalid Host Email", Toast.LENGTH_SHORT).show();
+                    jEmail.setError("Invalid Email");
+                    join.setEnabled(true);
                 }
             }
 
@@ -170,7 +174,8 @@ public class LobbyActivity extends AppCompatActivity {
         path = "lobby/" + email + "/";
         display_name = dName.getText().toString();
         if (display_name.length() == 0) {
-            Toast.makeText(LobbyActivity.this, "Enter Display Name", Toast.LENGTH_SHORT).show();
+            dName.setError("Enter Name");
+            create.setEnabled(true);
         }else {
             Toast.makeText(LobbyActivity.this, "Creating", Toast.LENGTH_SHORT).show();
             reference = FirebaseDatabase.getInstance().getReference(path);

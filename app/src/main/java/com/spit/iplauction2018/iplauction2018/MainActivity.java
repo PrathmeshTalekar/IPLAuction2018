@@ -127,13 +127,14 @@ public class MainActivity extends AppCompatActivity
             case R.id.help:
                 fragment = new HelpFragment();
                 break;
-            case R.id.sell:
-                fragment = new SellFragment();
-                break;
             case R.id.team:
                 fragment = new TeamFragment();
                 fragment.setArguments(frag_bundle);
                 break;
+//            case R.id.lobby:
+//                fragment = new LobbyFragment();
+//                fragment.setArguments(frag_bundle);
+//                break;
             case R.id.rules:
                 fragment = new RulesFragment();
                 break;
