@@ -91,7 +91,7 @@ public class HomeFragment extends Fragment {
     int i = 1;
     int j = 1;
     //    long time;
-    private DatabaseReference playerReference, userReference;
+    private DatabaseReference playerReference,nextPlayerReference, userReference;
 
     public void setGlobalMenu(Menu globalMenu) {
         this.globalMenu = globalMenu;
@@ -154,60 +154,8 @@ public class HomeFragment extends Fragment {
             button_50000.setEnabled(false);
         }
         playerReference = FirebaseDatabase.getInstance().getReference(lobby_in + "players/player" + i);
-        playerReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                player = dataSnapshot.getValue(Player.class);
-                name.setText(player.getName());
-                base_price.setText(player.getPrice());
-                bid_price.setText(player.getBidprice());
-                owner.setText(player.getOwnerName());
-                points = player.getPoints();
-                if (dataSnapshot.child("timestamp").exists() && player.getSold() != 1) {
-//                    time =dataSnapshot.child("timestamp").getValue(Long.class) ;
-                    if (flag != 0) {
-                        timer.cancel();
-                        timer = null;
-                        counter = 10;
-                    }
-                    timer = new CountDownTimer(11000, 1000) {
-                        public void onTick(long millisUntilFinished) {
-                            try {
-                                timer_text_view.setText("" + counter--);
-                            } catch (Exception e) {
-                            }
-                            flag = 1;
-                        }
-                        public void onFinish() {
-                            try {
-                                timer_text_view.setText("SOLD!!");
-                            } catch (Exception e) {
-                            }
-                            if (player.getSold() != 1) {
-                                player.setSold(1);
-                                playerReference.child("sold").setValue(1).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void aVoid) {
-                                        timer.cancel();
-                                        if (player.getOwnedBy().compareTo(FirebaseAuth.getInstance().getCurrentUser().getUid()) == 0) {
-                                            change(Double.parseDouble(player.getBidprice()), Double.parseDouble(player.getPoints()));
-                                        }
-                                        i++;
-                                        button_skip.setEnabled(true);
-                                        button_100.setEnabled(true);
-                                    }
-                                });
-                            }
-                        }
-                    }.start();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+        nextPlayerReference = FirebaseDatabase.getInstance().getReference(lobby_in + "players/player" + (i+1));
+        valueEventListener(playerReference);
 
         userReference = FirebaseDatabase.getInstance().getReference(lobby_in + FirebaseAuth.getInstance().getCurrentUser().getUid());
         userReference.addValueEventListener(new ValueEventListener() {
@@ -479,6 +427,86 @@ public class HomeFragment extends Fragment {
         userReference.child("numberOfPlayers").setValue(user.getNumberOfPlayers());
         userReference.child("players").child("player" + j++).setValue(player);
         userReference.child("players").child("numberOfPlayers").setValue(user.getNumberOfPlayers());
+    }
+
+    public void valueEventListener(DatabaseReference playerReference) {
+        final DatabaseReference currentPlayer = playerReference;
+        currentPlayer.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                player = dataSnapshot.getValue(Player.class);
+                name.setText(player.getName());
+                base_price.setText(player.getPrice());
+                bid_price.setText(player.getBidprice());
+                owner.setText(player.getOwnerName());
+                points = player.getPoints();
+                if (dataSnapshot.child("timestamp").exists() && player.getSold() != 1) {
+//                    time =dataSnapshot.child("timestamp").getValue(Long.class) ;
+                    if (flag != 0) {
+                        timer.cancel();
+                        timer = null;
+                        counter = 10;
+                    }
+                    timer = new CountDownTimer(11000, 1000) {
+                        public void onTick(long millisUntilFinished) {
+                            try {
+                                timer_text_view.setText("" + counter--);
+                            } catch (Exception e) {
+                            }
+                            flag = 1;
+                        }
+                        public void onFinish() {
+                            try {
+                                timer_text_view.setText("SOLD!!");
+                            } catch (Exception e) {
+                            }
+                            if (player.getSold() != 1) {
+                                player.setSold(1);
+                                currentPlayer.child("sold").setValue(1).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        timer.cancel();
+                                        i++;
+                                        changePlayer();
+                                        if (player.getOwnedBy().compareTo(FirebaseAuth.getInstance().getCurrentUser().getUid()) == 0) {
+                                            change(Double.parseDouble(player.getBidprice()), Double.parseDouble(player.getPoints()));
+
+                                        }
+                                        button_skip.setEnabled(true);
+                                        button_100.setEnabled(true);
+                                        button_200.setEnabled(true);
+                                        button_500.setEnabled(true);
+                                        button_1000.setEnabled(true);
+                                        button_2000.setEnabled(true);
+                                        button_5000.setEnabled(true);
+                                        button_10000.setEnabled(true);
+                                        button_20000.setEnabled(true);
+                                        button_50000.setEnabled(true);
+                                    }
+                                });
+                            }
+                        }
+                    }.start();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void changePlayer(){
+        playerReference=nextPlayerReference;
+
+        //Log.d("player", "changePlayer:"+playerReference.child("name"));
+
+        valueEventListener(playerReference);
+
+        nextPlayerReference = FirebaseDatabase.getInstance().getReference(lobby_in + "players/player" + (i+1));
+        //Log.d("player", "changePlayer:"+nextPlayerReference.child("name"));
+        timer_text_view.setText("No Bids Yet");
     }
 
 }
