@@ -1,9 +1,7 @@
 package com.spit.iplauction2018.iplauction2018;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.design.widget.NavigationView;
@@ -14,30 +12,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
-
-import com.firebase.ui.auth.AuthUI;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-
-    MenuItem menuItem;
     Menu menu;
-    private FirebaseDatabase mFirebaseDatabase;
-    private DatabaseReference mDatabaseReference;
-    private FirebaseAuth mFirebaseAuth;
-    //    private FirebaseAuth.AuthStateListener mAuthStateListener;
-    public static final int RC_SIGN_IN=1;
     Bundle frag_bundle;
-
+    public String message;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,11 +28,9 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         Bundle bundle = getIntent().getExtras();
-        String message = bundle.getString("lobby_path");
+        message = bundle.getString("lobby_path");
         frag_bundle = new Bundle();
         frag_bundle.putString("lobby", message);
-        mFirebaseDatabase=FirebaseDatabase.getInstance();
-        mFirebaseAuth=FirebaseAuth.getInstance();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -131,12 +110,11 @@ public class MainActivity extends AppCompatActivity
                 fragment = new TeamFragment();
                 fragment.setArguments(frag_bundle);
                 break;
-//            case R.id.lobby:
-//                fragment = new LobbyFragment();
-//                fragment.setArguments(frag_bundle);
-//                break;
             case R.id.rules:
                 fragment = new RulesFragment();
+                break;
+            case R.id.credits:
+                fragment = new CreditsFragment();
                 break;
         }
 

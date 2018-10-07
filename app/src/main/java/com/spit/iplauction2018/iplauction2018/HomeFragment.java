@@ -6,12 +6,9 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +18,6 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,8 +27,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,10 +39,8 @@ import static java.text.DateFormat.getDateTimeInstance;
  * A simple {@link Fragment} subclass.
  */
 public class HomeFragment extends Fragment {
-    private FirebaseDatabase mFirebaseDatabase;
     @BindView(R.id.bid_price)
     TextView bid_price;
-    private ChildEventListener mChildEventListener;
     Player player;
     @BindView(R.id.name_text_view)
     TextView name;
@@ -90,7 +82,6 @@ public class HomeFragment extends Fragment {
     boolean skipFlag=true;
     int i = 1;
     int j = 1;
-    //    long time;
     private DatabaseReference playerReference,nextPlayerReference, userReference;
 
     public void setGlobalMenu(Menu globalMenu) {
@@ -140,7 +131,6 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//        while (i<=30) {
         if(skipFlag){
             button_skip.setText("Start");
             button_100.setEnabled(false);
@@ -404,7 +394,6 @@ public class HomeFragment extends Fragment {
                 }
             }
         });
-//        }
     }
 
 
@@ -441,7 +430,6 @@ public class HomeFragment extends Fragment {
                 owner.setText(player.getOwnerName());
                 points = player.getPoints();
                 if (dataSnapshot.child("timestamp").exists() && player.getSold() != 1) {
-//                    time =dataSnapshot.child("timestamp").getValue(Long.class) ;
                     if (flag != 0) {
                         timer.cancel();
                         timer = null;
@@ -470,7 +458,6 @@ public class HomeFragment extends Fragment {
                                         changePlayer();
                                         if (player.getOwnedBy().compareTo(FirebaseAuth.getInstance().getCurrentUser().getUid()) == 0) {
                                             change(Double.parseDouble(player.getBidprice()), Double.parseDouble(player.getPoints()));
-
                                         }
                                         button_skip.setEnabled(true);
                                         button_100.setEnabled(true);
@@ -499,13 +486,8 @@ public class HomeFragment extends Fragment {
 
     public void changePlayer(){
         playerReference=nextPlayerReference;
-
-        //Log.d("player", "changePlayer:"+playerReference.child("name"));
-
         valueEventListener(playerReference);
-
         nextPlayerReference = FirebaseDatabase.getInstance().getReference(lobby_in + "players/player" + (i+1));
-        //Log.d("player", "changePlayer:"+nextPlayerReference.child("name"));
         timer_text_view.setText("No Bids Yet");
     }
 

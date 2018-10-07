@@ -7,27 +7,29 @@
         android:id="@+id/gameplay"
         android:checkableBehavior="single">
         <item
+            android:icon="@drawable/home"
             android:id="@+id/home"
             android:title="Home" />
         <item
             android:id="@+id/team"
+            android:icon="@drawable/team"
             android:title="Team" />
-        <!--<item-->
-            <!--android:id="@+id/lobby"-->
-            <!--android:title="Lobby" />-->
-        <!--<item-->
-            <!--android:id="@+id/lobbyActivity"-->
-            <!--android:title="Lobby Act" />-->
     </group>
     <group
         android:id="@+id/helpbar"
         android:checkableBehavior="single">
         <item
+            android:icon="@drawable/rules"
             android:id="@+id/rules"
             android:title="Rules" />
         <item
             android:id="@+id/help"
+            android:icon="@drawable/help"
             android:title="Help" />
+        <item
+            android:id="@+id/credits"
+            android:icon="@drawable/about"
+            android:title="Credits" />
     </group>
 
 

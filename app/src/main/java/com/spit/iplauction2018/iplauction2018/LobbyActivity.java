@@ -119,7 +119,6 @@ public class LobbyActivity extends AppCompatActivity {
         });
     }
 
-    int counter = 1;
     void joinLobby(String email, final int pin) {
         email = email.replaceAll("\\.", "");
         email = email.replaceAll("@", "");

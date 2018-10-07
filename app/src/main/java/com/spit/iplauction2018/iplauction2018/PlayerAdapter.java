@@ -1,6 +1,5 @@
 package com.spit.iplauction2018.iplauction2018;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,14 +9,17 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
-import android.support.v4.app.Fragment;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.ramotion.foldingcell.FoldingCell;
 
 import java.util.ArrayList;
 
 public class PlayerAdapter extends ArrayAdapter<Player> {
+
+    DatabaseReference playerReference;
 
     public PlayerAdapter(Context TeamFragment, ArrayList<Player> player) {
         super(TeamFragment, 0, player);
@@ -60,13 +62,10 @@ public class PlayerAdapter extends ArrayAdapter<Player> {
             public void onClick(View v) {
                 Player clickedPlayer = (Player)v.getTag();
                 Toast.makeText(getContext(), "Selling Player "+clickedPlayer.getName(), Toast.LENGTH_SHORT).show();
-
-
-
+                clickedPlayer.setSold(0);
+                //TODO: SELL THE PLAYER
             }
         });
-
-
         return listItemView;
     }
 }

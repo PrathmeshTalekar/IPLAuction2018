@@ -1,7 +1,5 @@
 package com.spit.iplauction2018.iplauction2018;
 
-import com.google.firebase.auth.FirebaseAuth;
-
 public class User {
     String displayName;
     String cash;

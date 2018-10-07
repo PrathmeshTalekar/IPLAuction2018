@@ -5,12 +5,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -62,7 +60,9 @@ public class TeamFragment extends Fragment {
                     numberOfPlayers = dataSnapshot.child("numberOfPlayers").getValue(Integer.class);
                     for (int i = 1; i <= numberOfPlayers; i++) {
                         displayPlayer = dataSnapshot.child("player" + i).getValue(Player.class);
-                        player.add(displayPlayer);
+                        if (displayPlayer.getSold() == 1) {
+                            player.add(displayPlayer);
+                        }
                     }
                     PlayerAdapter adapter = new PlayerAdapter(getContext(), player);
                     ListView listView = (ListView) getActivity().findViewById(R.id.list);
@@ -75,21 +75,5 @@ public class TeamFragment extends Fragment {
 
             }
         });
-//        ArrayList<Player> player = new ArrayList<Player>();
-//        player.add(new Player("Shikar Dhawan", "batsman"));
-//        player.add(new Player("Virendra Sehwag","batsman"));
-//        player.add(new Player("Ajinkya Rahane", "batsman"));
-//        player.add(new Player("Sachin Tendulkar","batsman"));
-//        player.add(new Player("Ricky Ponting","batsman"));
-//        player.add(new Player("MS Dhoni","wicketkeeper"));
-//        player.add(new Player("Yuvraj Singh","all rounder"));
-//        player.add(new Player("Ravindra Ashwin","bowler"));
-//        player.add(new Player("Lasith Malinga","bowler"));
-//        player.add(new Player("Ishan Sharma","bowler"));
-//        player.add(new Player("Sunil Narine","bowler"));
-
-
     }
-
-
 }

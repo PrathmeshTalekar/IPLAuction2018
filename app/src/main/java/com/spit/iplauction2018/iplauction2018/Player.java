@@ -1,7 +1,5 @@
 package com.spit.iplauction2018.iplauction2018;
 
-import java.util.Map;
-
 public class Player {
     private String name;
     private String bidprice;
