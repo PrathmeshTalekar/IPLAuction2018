@@ -1,6 +1,7 @@
 package com.spit.iplauction2018.iplauction2018;
 
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -46,6 +47,8 @@ public class HomeFragment extends Fragment {
     TextView name;
     @BindView(R.id.price_text_view)
     TextView base_price;
+    @BindView(R.id.points_text_view)
+    TextView point;
     @BindView(R.id.button_100)
     Button button_100;
     @BindView(R.id.button_200)
@@ -79,6 +82,7 @@ public class HomeFragment extends Fragment {
     Menu globalMenu;
     User user = new User();
     String points;
+    String type1;
     boolean skipFlag=true;
     int i = 1;
     int j = 1;
@@ -155,6 +159,8 @@ public class HomeFragment extends Fragment {
                 user.setCash(dataSnapshot.child("cash").getValue(String.class));
                 user.setPoints(dataSnapshot.child("points").getValue(String.class));
                 user.setNumberOfPlayers(dataSnapshot.child("numberOfPlayers").getValue(Integer.class));
+                user.setNumberOfwk(dataSnapshot.child("numberOfwk").getValue(Integer.class));
+                user.setNumberOfallrounder(dataSnapshot.child("numberOfallrounder").getValue(Integer.class));
                 cash = user.getCash();
                 setMoney(cash);
             }
@@ -175,6 +181,7 @@ public class HomeFragment extends Fragment {
                 } else {
                     counter = 11;
                     button_skip.setEnabled(false);
+                    button_skip.setBackgroundColor(0xFF263238);
                     final String newPrice = "" + (Double.parseDouble(player.getBidprice()) + 100);
                     player.setBidprice(newPrice);
                     player.setOwnerName(user.getDisplayName());
@@ -197,6 +204,7 @@ public class HomeFragment extends Fragment {
                 } else {
                     counter = 11;
                     button_skip.setEnabled(false);
+                    button_skip.setBackgroundColor(0xFF263238);
                     final String newPrice = "" + (Double.parseDouble(player.getBidprice()) + 1000);
                     player.setBidprice(newPrice);
                     player.setOwnerName(user.getDisplayName());
@@ -219,6 +227,7 @@ public class HomeFragment extends Fragment {
                 } else {
                     counter = 11;
                     button_skip.setEnabled(false);
+                    button_skip.setBackgroundColor(0xFF263238);
                     final String newPrice = "" + (Double.parseDouble(player.getBidprice()) + 10000);
                     player.setBidprice(newPrice);
                     player.setOwnerName(user.getDisplayName());
@@ -241,6 +250,7 @@ public class HomeFragment extends Fragment {
                 } else {
                     counter = 11;
                     button_skip.setEnabled(false);
+                    button_skip.setBackgroundColor(0xFF263238);
                     final String newPrice = "" + (Double.parseDouble(player.getBidprice()) + 200);
                     player.setBidprice(newPrice);
                     player.setOwnerName(user.getDisplayName());
@@ -263,6 +273,7 @@ public class HomeFragment extends Fragment {
                 } else {
                     counter = 11;
                     button_skip.setEnabled(false);
+                    button_skip.setBackgroundColor(0xFF263238);
                     final String newPrice = "" + (Double.parseDouble(player.getBidprice()) + 2000);
                     player.setBidprice(newPrice);
                     player.setOwnerName(user.getDisplayName());
@@ -285,6 +296,7 @@ public class HomeFragment extends Fragment {
                 } else {
                     counter = 11;
                     button_skip.setEnabled(false);
+                    button_skip.setBackgroundColor(0xFF263238);
                     final String newPrice = "" + (Double.parseDouble(player.getBidprice()) + 20000);
                     player.setBidprice(newPrice);
                     player.setOwnerName(user.getDisplayName());
@@ -307,6 +319,7 @@ public class HomeFragment extends Fragment {
                 } else {
                     counter = 11;
                     button_skip.setEnabled(false);
+                    button_skip.setBackgroundColor(0xFF263238);
                     final String newPrice = "" + (Double.parseDouble(player.getBidprice()) + 500);
                     player.setBidprice(newPrice);
                     player.setOwnerName(user.getDisplayName());
@@ -329,6 +342,7 @@ public class HomeFragment extends Fragment {
                 } else {
                     counter = 11;
                     button_skip.setEnabled(false);
+                    button_skip.setBackgroundColor(0xFF263238);
                     final String newPrice = "" + (Double.parseDouble(player.getBidprice()) + 5000);
                     player.setBidprice(newPrice);
                     player.setOwnerName(user.getDisplayName());
@@ -351,6 +365,7 @@ public class HomeFragment extends Fragment {
                 } else {
                     counter = 11;
                     button_skip.setEnabled(false);
+                    button_skip.setBackgroundColor(0xFF263238);
                     final String newPrice = "" + (Double.parseDouble(player.getBidprice()) + 50000);
                     player.setBidprice(newPrice);
                     player.setOwnerName(user.getDisplayName());
@@ -403,7 +418,7 @@ public class HomeFragment extends Fragment {
         unbinder.unbind();
     }
 
-    public void change(double deduct, double add) {
+    public void change(double deduct, double add, String types) {
         double totalCash = Double.parseDouble(user.getCash());
         double cashRemain = totalCash - deduct;
         user.setCash("" + cashRemain);
@@ -411,6 +426,14 @@ public class HomeFragment extends Fragment {
         double newPoints = basePoints + add;
         user.setPoints("" + newPoints);
         user.setNumberOfPlayers(user.getNumberOfPlayers() + 1);
+        if (types.compareTo("wicketkeeper") == 0) {
+            user.setNumberOfwk(user.getNumberOfwk() + 1);
+        }
+        if (types.compareTo("allrounder") == 0) {
+            user.setNumberOfallrounder(user.getNumberOfallrounder() + 1);
+        }
+        userReference.child("numberOfallrounder").setValue(user.getNumberOfallrounder());
+        userReference.child("numberOfwk").setValue(user.getNumberOfwk());
         userReference.child("cash").setValue(user.getCash());
         userReference.child("points").setValue(user.getPoints());
         userReference.child("numberOfPlayers").setValue(user.getNumberOfPlayers());
@@ -427,8 +450,10 @@ public class HomeFragment extends Fragment {
                 name.setText(player.getName());
                 base_price.setText(player.getPrice());
                 bid_price.setText(player.getBidprice());
+                point.setText(player.getPoints());
                 owner.setText(player.getOwnerName());
                 points = player.getPoints();
+                type1 = player.getType();
                 if (dataSnapshot.child("timestamp").exists() && player.getSold() != 1) {
                     if (flag != 0) {
                         timer.cancel();
@@ -457,9 +482,10 @@ public class HomeFragment extends Fragment {
                                         i++;
                                         changePlayer();
                                         if (player.getOwnedBy().compareTo(FirebaseAuth.getInstance().getCurrentUser().getUid()) == 0) {
-                                            change(Double.parseDouble(player.getBidprice()), Double.parseDouble(player.getPoints()));
+                                            change(Double.parseDouble(player.getBidprice()), Double.parseDouble(player.getPoints()), player.getType());
                                         }
                                         button_skip.setEnabled(true);
+                                        button_skip.setBackgroundColor(0xFFB0BEC5);
                                         button_100.setEnabled(true);
                                         button_200.setEnabled(true);
                                         button_500.setEnabled(true);
