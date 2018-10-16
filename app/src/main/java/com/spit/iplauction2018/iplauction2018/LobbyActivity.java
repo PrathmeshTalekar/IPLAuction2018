@@ -186,6 +186,9 @@ public class LobbyActivity extends AppCompatActivity {
         }else {
             Toast.makeText(LobbyActivity.this, "Creating", Toast.LENGTH_SHORT).show();
             reference = FirebaseDatabase.getInstance().getReference(path);
+            reference.child("winner").child("name").setValue("0");
+            reference.child("winner").child("key").setValue("0");
+            reference.child("winner").child("points").setValue("0");
             reference.child("pin").setValue(pin).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {

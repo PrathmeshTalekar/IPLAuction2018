@@ -1,7 +1,7 @@
 package com.spit.iplauction2018.iplauction2018;
 
 
-import android.graphics.Color;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -86,7 +86,8 @@ public class HomeFragment extends Fragment {
     boolean skipFlag=true;
     int i = 1;
     int j = 1;
-    private DatabaseReference playerReference,nextPlayerReference, userReference;
+    String winnerPoints, winnerKey, winnerName;
+    private DatabaseReference playerReference, nextPlayerReference, userReference, winnerReference;
 
     public void setGlobalMenu(Menu globalMenu) {
         this.globalMenu = globalMenu;
@@ -148,6 +149,21 @@ public class HomeFragment extends Fragment {
             button_50000.setEnabled(false);
         }
         playerReference = FirebaseDatabase.getInstance().getReference(lobby_in + "players/player" + i);
+        winnerReference = FirebaseDatabase.getInstance().getReference(lobby_in + "winner");
+        winnerReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                winnerName = dataSnapshot.child("name").getValue(String.class);
+                Toast.makeText(getContext(), winnerName, Toast.LENGTH_SHORT).show();
+                winnerPoints = dataSnapshot.child("points").getValue(String.class);
+                winnerKey = dataSnapshot.child("key").getValue(String.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
         nextPlayerReference = FirebaseDatabase.getInstance().getReference(lobby_in + "players/player" + (i+1));
         valueEventListener(playerReference);
 
@@ -439,6 +455,11 @@ public class HomeFragment extends Fragment {
         userReference.child("numberOfPlayers").setValue(user.getNumberOfPlayers());
         userReference.child("players").child("player" + j++).setValue(player);
         userReference.child("players").child("numberOfPlayers").setValue(user.getNumberOfPlayers());
+        if (user.getNumberOfPlayers() >= 5 && user.getNumberOfwk() >= 1 && user.getNumberOfallrounder() >= 2 && Double.parseDouble(winnerPoints) < Double.parseDouble(user.getPoints())) {
+            winnerReference.child("name").setValue(user.getDisplayName());
+            winnerReference.child("key").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
+            winnerReference.child("points").setValue(user.getPoints());
+        }
     }
 
     public void valueEventListener(DatabaseReference playerReference) {
@@ -447,11 +468,15 @@ public class HomeFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 player = dataSnapshot.getValue(Player.class);
-                name.setText(player.getName());
-                base_price.setText(player.getPrice());
-                bid_price.setText(player.getBidprice());
-                point.setText(player.getPoints());
-                owner.setText(player.getOwnerName());
+                try {
+                    name.setText(player.getName());
+                    base_price.setText(player.getPrice());
+                    bid_price.setText(player.getBidprice());
+                    point.setText(player.getPoints());
+                    owner.setText(player.getOwnerName());
+                } catch (Exception e) {
+
+                }
                 points = player.getPoints();
                 type1 = player.getType();
                 if (dataSnapshot.child("timestamp").exists() && player.getSold() != 1) {
@@ -511,10 +536,17 @@ public class HomeFragment extends Fragment {
     }
 
     public void changePlayer(){
-        playerReference=nextPlayerReference;
-        valueEventListener(playerReference);
-        nextPlayerReference = FirebaseDatabase.getInstance().getReference(lobby_in + "players/player" + (i+1));
-        timer_text_view.setText("No Bids Yet");
+        if (i < 31) {
+            playerReference = nextPlayerReference;
+            valueEventListener(playerReference);
+            nextPlayerReference = FirebaseDatabase.getInstance().getReference(lobby_in + "players/player" + (i + 1));
+            timer_text_view.setText("No Bids Yet");
+        } else {
+            Intent intent = new Intent(getActivity(), WinnerActivity.class);
+            startActivity(intent);
+            getActivity().finish();
+        }
     }
+
 
 }
