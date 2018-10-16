@@ -5,6 +5,9 @@ public class User {
     String cash;
     String points;
     int numberOfPlayers;
+    int numberOfwk;
+    int numberOfallrounder;
+    int point;
     String lobby;
 
     public User() {
@@ -50,5 +53,21 @@ public class User {
 
     public void setNumberOfPlayers(int numberOfPlayers) {
         this.numberOfPlayers = numberOfPlayers;
+    }
+
+    public int getNumberOfwk() {
+        return numberOfwk;
+    }
+
+    public void setNumberOfwk(int numberOfwk) {
+        this.numberOfwk = numberOfwk;
+    }
+
+    public int getNumberOfallrounder() {
+        return numberOfallrounder;
+    }
+
+    public void setNumberOfallrounder(int numberOfallrounder) {
+        this.numberOfallrounder = numberOfallrounder;
     }
 }

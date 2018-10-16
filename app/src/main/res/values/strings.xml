@@ -14,9 +14,9 @@
     <string name="helpline_1">Nehal Surti: +91 86528 31569</string>
     <string name="helpline_2">Prathmesh Talekar: +91 75069 47244</string>
     <string name="helpline_3">Taksh Soni: +91 98702 45451</string>
-    <string name="rule1">A team must consist of minimum 11 players</string>
-    <string name="rule2">A team must consist of minimum 4 batsmen, 4 bowlers, 2 allrounders and 1 wicketkeeper</string>
-    <string name="rule3">You can also sell the players you have brought</string>
+    <string name="rule1">A team must consist of minimum 5 players to win</string>
+    <string name="rule2">A team must consist of minimum 2 allrounder and 1 wicketkeeper</string>
+    <string name="rule3">You can only sell one player</string>
     <string name="rule4">Play fair</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
