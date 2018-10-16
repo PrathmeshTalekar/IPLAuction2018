@@ -152,6 +152,7 @@ public class LobbyActivity extends AppCompatActivity {
                                             sharedPreferences = getSharedPreferences("MY_GAME", Context.MODE_PRIVATE);
                                             SharedPreferences.Editor editor = sharedPreferences.edit();
                                             editor.putString("lobby", path);
+                                            editor.putInt("sell", 0);
                                             editor.apply();
 //                                            String  hello =sharedPreferences.getString("lobby",null);
                                             intent.putExtra("lobby_path", path);
@@ -207,6 +208,7 @@ public class LobbyActivity extends AppCompatActivity {
                                                     sharedPreferences = getSharedPreferences("MY_GAME", Context.MODE_PRIVATE);
                                                     SharedPreferences.Editor editor = sharedPreferences.edit();
                                                     editor.putString("lobby", path);
+                                                    editor.putInt("sell", 0);
                                                     editor.apply();
                                                     intent.putExtra("lobby_path", path);
                                                     startActivity(intent);

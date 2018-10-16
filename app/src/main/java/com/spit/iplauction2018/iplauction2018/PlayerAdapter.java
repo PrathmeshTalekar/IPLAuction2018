@@ -28,15 +28,19 @@ public class PlayerAdapter extends ArrayAdapter<Player> {
 
     DatabaseReference playerReference, userReference;
     SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
     String lobby_in;
-    User user;
-    int price;
-    int i = 0;
+    User user = new User();
+    int i = 0, j = 0;
+    int sell_done;
+    Player player;
 
     public PlayerAdapter(Context TeamFragment, ArrayList<Player> player) {
         super(TeamFragment, 0, player);
         sharedPreferences = TeamFragment.getSharedPreferences("MY_GAME", Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
         lobby_in = sharedPreferences.getString("lobby", null);
+        sell_done = sharedPreferences.getInt("sell", 0);
     }
 
     @NonNull
@@ -74,7 +78,7 @@ public class PlayerAdapter extends ArrayAdapter<Player> {
         sell.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (i == 0) {
+                if (sell_done == 0) {
                     Player clickedPlayer = (Player) v.getTag();
                     clickedPlayer.setSold(0);
                     playerReference = FirebaseDatabase.getInstance().getReference(lobby_in + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/players/player" + (position + 1));
@@ -89,6 +93,19 @@ public class PlayerAdapter extends ArrayAdapter<Player> {
                                     user.setCash(dataSnapshot.child("cash").getValue(String.class));
                                     user.setPoints(dataSnapshot.child("points").getValue(String.class));
                                     user.setNumberOfPlayers(dataSnapshot.child("numberOfPlayers").getValue(Integer.class));
+                                    playerReference.addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                            player = dataSnapshot.getValue(Player.class);
+                                            changeDetails();
+
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                        }
+                                    });
                                 }
 
                                 @Override
@@ -98,13 +115,37 @@ public class PlayerAdapter extends ArrayAdapter<Player> {
                             });
                         }
                     });
-                    i = 1;
+                    sell_done = 1;
+                    editor.putInt("sell", 1);
+                    editor.commit();
                 } else {
                     Toast.makeText(getContext(), "Already 1 player sold", Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
         return listItemView;
+    }
+
+    public void changeDetails() {
+        if (j == 0) {
+            if (player.getType().compareTo("wicketkeeper") == 0) {
+
+                userReference.child("numberOfwk").setValue(user.getNumberOfwk());
+                j = 1;
+            }
+            if (player.getType().compareTo("allrounder") == 0) {
+                userReference.child("numberOfallrounder").setValue(user.getNumberOfallrounder());
+                j = 1;
+            }
+            user.setNumberOfPlayers(user.getNumberOfPlayers() - 1);
+            userReference.child("numberOfPlayers").setValue(user.getNumberOfPlayers());
+            userReference.child("players").child("numberOfPlayers").setValue(user.getNumberOfPlayers());
+            double x = Double.parseDouble(user.getCash()) + Double.parseDouble(player.getPrice());
+            user.setCash("" + x);
+            userReference.child("cash").setValue(user.getCash());
+            double y = Double.parseDouble(user.getPoints()) - Double.parseDouble(player.getPoints());
+            user.setPoints("" + y);
+            userReference.child("points").setValue(user.getPoints());
+        }
     }
 }

@@ -21,6 +21,8 @@ public class MainActivity extends AppCompatActivity
     Bundle frag_bundle;
     public String message;
     private Boolean exit = false;
+    Fragment fragment = null;
+    HomeFragment homeFragment = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +46,6 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
     }
-
-    Fragment fragment = null;
 
     @Override
     protected void onPause() {
@@ -72,8 +72,6 @@ public class MainActivity extends AppCompatActivity
             }
         }
     }
-
-    HomeFragment homeFragment = null;
 
     @Override
     protected void onResume() {

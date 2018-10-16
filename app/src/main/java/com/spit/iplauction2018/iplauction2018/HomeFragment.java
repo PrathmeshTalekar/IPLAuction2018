@@ -42,13 +42,16 @@ import static java.text.DateFormat.getDateTimeInstance;
 public class HomeFragment extends Fragment {
     @BindView(R.id.bid_price)
     TextView bid_price;
-    Player player;
     @BindView(R.id.name_text_view)
     TextView name;
     @BindView(R.id.price_text_view)
     TextView base_price;
     @BindView(R.id.points_text_view)
     TextView point;
+    @BindView(R.id.timer_text)
+    TextView timer_text_view;
+    @BindView(R.id.owner)
+    TextView owner;
     @BindView(R.id.button_100)
     Button button_100;
     @BindView(R.id.button_200)
@@ -67,26 +70,18 @@ public class HomeFragment extends Fragment {
     Button button_20000;
     @BindView(R.id.button_50000)
     Button button_50000;
-    @BindView(R.id.timer_text)
-    TextView timer_text_view;
-    @BindView(R.id.owner)
-    TextView owner;
     @BindView(R.id.skip)
     Button button_skip;
-    CountDownTimer timer;
-    int counter = 10, flag = 0;
-    String lobby_in, cash;
+    Player player;
+    User user = new User();
     View rootView;
-    MenuItem myItem;
     private Unbinder unbinder;
     Menu globalMenu;
-    User user = new User();
-    String points;
-    String type1;
+    MenuItem myItem;
+    CountDownTimer timer;
+    int counter = 10, flag = 0, j = 1, i = 1;
     boolean skipFlag=true;
-    int i = 1;
-    int j = 1;
-    String winnerPoints, winnerKey, winnerName;
+    String lobby_in, cash, winnerPoints, winnerKey, winnerName, type1, points;
     private DatabaseReference playerReference, nextPlayerReference, userReference, winnerReference;
 
     public void setGlobalMenu(Menu globalMenu) {
@@ -96,7 +91,6 @@ public class HomeFragment extends Fragment {
     public HomeFragment() {
         // Required empty public constructor
     }
-
 
     void setMoney(final String money) {
         if (globalMenu != null) {
@@ -112,7 +106,6 @@ public class HomeFragment extends Fragment {
             new Handler().postDelayed(r, 100);
         }
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

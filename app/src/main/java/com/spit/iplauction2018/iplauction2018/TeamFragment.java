@@ -58,11 +58,14 @@ public class TeamFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.child("numberOfPlayers").exists()) {
                     numberOfPlayers = dataSnapshot.child("numberOfPlayers").getValue(Integer.class);
-                    for (int i = 1; i <= numberOfPlayers; i++) {
+                    int j = numberOfPlayers;
+                    for (int i = 1; i <= j; i++) {
                         displayPlayer = dataSnapshot.child("player" + i).getValue(Player.class);
                         if (displayPlayer.getSold() == 1) {
                             player.add(displayPlayer);
-                        }
+                        } else if (displayPlayer.getSold() == 0)
+                            j++;
+
                     }
                     PlayerAdapter adapter = new PlayerAdapter(getContext(), player);
                     ListView listView = (ListView) getActivity().findViewById(R.id.list);
